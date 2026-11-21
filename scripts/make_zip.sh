@@ -13,8 +13,10 @@ git archive --format=zip --prefix="EVU2_${NAME}/" -o "$OUT" "$REF"
 
 echo "Contenido de $OUT:"
 unzip -l "$OUT"
-if unzip -l "$OUT" | grep -qE '\.tfstate|/\.terraform/|tfplan|\.pem$|\.key$|backend\.hcl$'; then
+# Listado en variable: "unzip | grep -q" con pipefail da falsos negativos (SIGPIPE al cortar grep).
+listing=$(unzip -l "$OUT")
+if grep -qE '\.tfstate|/\.terraform/|tfplan|\.pem$|\.key$|backend\.hcl$' <<<"$listing"; then
   echo "ERROR: el ZIP contiene archivos prohibidos"; exit 1
 fi
-unzip -l "$OUT" | grep -q '.terraform.lock.hcl' || { echo "ERROR: falta .terraform.lock.hcl"; exit 1; }
+grep -q '\.terraform\.lock\.hcl' <<<"$listing" || { echo "ERROR: falta .terraform.lock.hcl"; exit 1; }
 echo "ZIP limpio generado: $OUT (commit $(git rev-parse --short "$REF"))"
