@@ -1,0 +1,17 @@
+UTC                      HTTP VER PERFIL    ID                   IP_PRIVADA      ZONA        SHA256
+2026-11-21T17:36:57Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:36:59Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:01Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:37:03Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:05Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:37:08Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:10Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:37:12Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:14Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:37:16Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:18Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:37:21Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:23Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+2026-11-21T17:37:25Z     200  v1  basic     i-07a40b5345ffa6ec0  10.4.10.39      us-east-1a  82f7e3a976f7
+2026-11-21T17:37:27Z     200  v1  basic     i-05d02cc45da89f5a4  10.4.20.186     us-east-1b  82f7e3a976f7
+Muestras: 15 | fallos: 0 | versión esperada: v1 | identidad: a004/c50/X=4

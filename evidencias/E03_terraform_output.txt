@@ -1,0 +1,37 @@
+compute = {
+  "alb_arn" = "arn:aws:elasticloadbalancing:us-east-1:****9245:loadbalancer/app/na-u2-c50-a004-alb/96f4819a35613e91"
+  "asg_name" = "na-u2-c50-a004-asg"
+  "base_capacity" = 2
+  "launch_template_id" = "lt-078862d5af9becb83"
+  "launch_template_version" = 1
+  "max_capacity" = 4
+  "target_group_arn" = "arn:aws:elasticloadbalancing:us-east-1:****9245:targetgroup/na-u2-c50-a004-tg/70c992e2d36f7cf7"
+}
+context = {
+  "alumno" = "a004"
+  "app_version" = "v1"
+  "build_ref" = "e3f129c"
+  "curso" = "c50"
+  "name_prefix" = "na-u2-c50-a004"
+  "proveedor" = "aws"
+  "region" = "us-east-1"
+  "x" = 4
+}
+network = {
+  "subnets" = {
+    "a" = {
+      "az" = "us-east-1a"
+      "cidr" = "10.4.10.0/24"
+      "id" = "subnet-097d37f465a6c4907"
+    }
+    "b" = {
+      "az" = "us-east-1b"
+      "cidr" = "10.4.20.0/24"
+      "id" = "subnet-0ca8bc39db6f273f7"
+    }
+  }
+  "vpc_cidr" = "10.4.0.0/16"
+  "vpc_id" = "vpc-00dff4d6803b806d1"
+}
+portal_endpoint = "http://na-u2-c50-a004-alb-101744380.us-east-1.elb.amazonaws.com"
+user_data_bytes = 15566
