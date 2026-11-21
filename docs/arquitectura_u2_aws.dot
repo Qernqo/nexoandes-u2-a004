@@ -1,0 +1,57 @@
+// Diagrama de la implementación real U2 (AWS). Generar PNG:
+//   dot -Tpng -Gdpi=160 docs/arquitectura_u2_aws.dot -o docs/arquitectura_u2_aws.png
+digraph U2 {
+  graph [rankdir=TB, fontname="Arial", fontsize=13, splines=spline, nodesep=0.45, ranksep=0.55, pad=0.3,
+         label="NexoAndes U2 · Implementación AWS (X=4 · a004 · c50) · gestión (discontinua) y tráfico (continua)", labelloc=t];
+  node  [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, fillcolor="#ffffff", color="#33475b"];
+  edge  [fontname="Arial", fontsize=9, color="#33475b"];
+
+  subgraph cluster_mgmt {
+    label="Gestión (plano de control)"; style="rounded,dashed"; color="#6b7c8f"; fontcolor="#33475b";
+    dev   [label="PC del estudiante\nTerraform 1.13 · Git · AWS CLI\nobserve_http.sh / observe_aws.sh"];
+    repo  [label="GitHub · repositorio\nramas + PR (revisión)\nterraform/ · scripts/ · .lock.hcl"];
+    gha   [label="GitHub Actions · infra-u2-aws\ncontroles → plan → aprobación\n(environment produccion) → apply\n→ wait_refresh → verify_portal", fillcolor="#eef4fb"];
+    state [label="S3 · state remoto\nna-u2-c50-a004-tfstate-*\nuse_lockfile · cifrado · versionado", fillcolor="#fff8e6"];
+    sec   [label="Secrets del repo\ncredenciales temporales\nLearner Lab (~4 h)", fillcolor="#fff8e6"];
+  }
+
+  subgraph cluster_aws {
+    label="AWS · cuenta Learner Lab · us-east-1"; style="rounded"; color="#d9822b"; fontcolor="#b35c00";
+    api [label="APIs AWS (HTTPS 443)\nEC2 · ELBv2 · Auto Scaling"];
+    lt  [label="Launch Template na-u2-c50-a004-lt\nAMI Ubuntu fijada · t3.micro · IMDSv2\nuser_data = user_data_u2.sh.tpl (v1|v2)\nversiones: 1=v1 · 2=v2 · 3=v1 (retorno)", fillcolor="#fdf1e6"];
+
+    subgraph cluster_vpc {
+      label="VPC na-u2-c50-a004-aws-vpc · 10.4.0.0/16"; style="rounded"; color="#8c4fd6"; fontcolor="#6a35b0";
+      igw [label="Internet Gateway\nRT pública: 10.4.0.0/16 local · 0.0.0.0/0 → IGW"];
+      alb [label="ALB internet-facing na-u2-c50-a004-alb\nlistener HTTP 80 → Target Group\nSG-ALB: 80 desde orígenes autorizados", fillcolor="#f3ecfc"];
+      tg  [label="Target Group na-u2-c50-a004-tg\nhealth check GET /api/check (200)\nderegistration delay 30 s"];
+      asg [label="ASG na-u2-c50-a004-asg (controlador único)\nbase 2 · máx 4 (temporal +2)\nInstance Refresh Rolling: min 100 % · max 200 % · warmup 120 s", fillcolor="#fdf1e6"];
+      subgraph cluster_a { label="Subred A 10.4.10.0/24 · zona A"; style="rounded,dashed"; color="#999999";
+        ec2a [label="EC2 Portal (v1 / v2)\nIP privada real 10.4.10.x\nSG-EC2: 80 solo desde SG-ALB"]; }
+      subgraph cluster_b { label="Subred B 10.4.20.0/24 · zona B"; style="rounded,dashed"; color="#999999";
+        ec2b [label="EC2 Portal (v1 / v2)\nIP privada real 10.4.20.x\nsin SSH"]; }
+    }
+  }
+
+  azure [label="Azure (VM Linux, Portal v1)\nfuera del alcance práctico de esta entrega\nrestricción documentada · sin conectividad con AWS", style="rounded,dashed", fontcolor="#6b7c8f", color="#9aa7b4"];
+  client [label="Cliente / PC de pruebas\ncurl · navegador\nhttp://<DNS del ALB>/api/check", fillcolor="#eaf6ee"];
+
+  dev -> repo [style=dashed, label="commit / push / PR"];
+  repo -> gha [style=dashed];
+  sec -> gha [style=dashed];
+  gha -> state [style=dashed, dir=both, label="lock + state"];
+  gha -> api [style=dashed, label="plan / apply"];
+  api -> lt [style=dashed];
+  api -> asg [style=dashed];
+  lt -> asg [style=dashed, label="versión fijada"];
+  asg -> ec2a [style=dashed, label="lanza / reemplaza"];
+  asg -> ec2b [style=dashed];
+  asg -> tg [style=dashed, label="registra / drena"];
+
+  client -> igw [color="#1f6fb2", penwidth=1.6, label="HTTP 80"];
+  igw -> alb [color="#1f6fb2", penwidth=1.6];
+  alb -> tg [color="#1f6fb2", penwidth=1.6];
+  tg -> ec2a [color="#1f6fb2", penwidth=1.6];
+  tg -> ec2b [color="#1f6fb2", penwidth=1.6];
+  ec2a -> igw [style=dotted, color="#888888", label="salida bootstrap 80/443"];
+}

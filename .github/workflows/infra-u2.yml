@@ -1,0 +1,268 @@
+# Pipeline de infraestructura NexoAndes U2 (AWS).
+#   controles -> plan -> autorización (environment "produccion") -> apply -> espera del controlador
+#
+# Disparadores:
+#   - pull_request a main: controles + plan especulativo (revisión del cambio).
+#   - push a main (merge del PR) con cambios en terraform/: controles + plan + apply con aprobación.
+#   - workflow_dispatch: plan (plan posterior / sin cambios), apply o destroy (cierre E08).
+#
+# Credenciales: AWS Academy Learner Lab entrega credenciales temporales (~4 h).
+# Se cargan como secrets del repositorio y se renuevan al iniciar cada sesión.
+
+name: infra-u2-aws
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - "terraform/**"
+      - ".github/workflows/infra-u2.yml"
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "plan = solo revisar | apply = aplicar cambios | destroy = retirar recursos"
+        type: choice
+        options: [plan, apply, destroy]
+        default: plan
+
+permissions:
+  contents: read
+
+# Un único controlador: nunca dos ejecuciones simultáneas sobre el mismo state.
+concurrency:
+  group: infra-u2-aws
+  cancel-in-progress: false
+
+env:
+  TF_VERSION: "1.13.x"
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
+  STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+
+jobs:
+  controles:
+    name: Controles (fmt, validate, tflint, higiene)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: terraform fmt
+        working-directory: terraform
+        run: terraform fmt -check -recursive -diff
+
+      - name: terraform init (sin backend, lock file obligatorio)
+        working-directory: terraform
+        run: terraform init -backend=false -lockfile=readonly -no-color
+
+      - name: terraform validate
+        working-directory: terraform
+        run: terraform validate -no-color
+
+      - uses: terraform-linters/setup-tflint@v4
+
+      - name: tflint
+        working-directory: terraform
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          tflint --init
+          tflint --recursive --format compact
+
+      - name: shellcheck de scripts
+        run: shellcheck -x scripts/*.sh
+
+      - name: Higiene del repositorio (sin state, planes, claves ni credenciales)
+        run: bash scripts/check_repo_hygiene.sh
+
+  plan:
+    name: Plan
+    needs: controles
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.plan.outputs.has_changes }}
+      build_ref: ${{ steps.ref.outputs.build_ref }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Contexto AWS autorizado (cuenta enmascarada)
+        run: |
+          ACC=$(aws sts get-caller-identity --query Account --output text)
+          echo "::add-mask::$ACC"
+          echo "Cuenta: ****${ACC: -4} | Región: $AWS_REGION"
+          aws sts get-caller-identity --query Arn --output text | sed -E "s/[0-9]{12}/****${ACC: -4}/"
+
+      - name: build_ref (último commit que modificó terraform/)
+        id: ref
+        run: |
+          REF=$(git log -1 --format=%h -- terraform/)
+          echo "build_ref=$REF" >> "$GITHUB_OUTPUT"
+          echo "Commit evaluado: $GITHUB_SHA | build_ref: $REF"
+
+      - name: terraform init (backend S3 con use_lockfile)
+        working-directory: terraform
+        run: |
+          terraform init -no-color -lockfile=readonly \
+            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+            -backend-config="key=$STATE_KEY" \
+            -backend-config="region=$AWS_REGION" \
+            -backend-config="encrypt=true" \
+            -backend-config="use_lockfile=true"
+
+      - name: terraform plan
+        id: plan
+        working-directory: terraform
+        run: |
+          MODE=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.operation }}" = "destroy" ]; then
+            MODE="-destroy"
+          fi
+          set +e
+          terraform plan -no-color -lock-timeout=120s -detailed-exitcode $MODE \
+            -var "build_ref=${{ steps.ref.outputs.build_ref }}" -out=tfplan
+          code=$?
+          set -e
+          if [ "$code" -eq 1 ]; then echo "El plan falló"; exit 1; fi
+          if [ "$code" -eq 2 ]; then echo "has_changes=true" >> "$GITHUB_OUTPUT"; else echo "has_changes=false" >> "$GITHUB_OUTPUT"; fi
+          ACC=$(aws sts get-caller-identity --query Account --output text)
+          terraform show -no-color tfplan | sed "s/$ACC/****${ACC: -4}/g" > plan.txt
+          {
+            echo "## Plan U2 — commit \`${GITHUB_SHA::7}\` — build_ref \`${{ steps.ref.outputs.build_ref }}\`"
+            echo ""
+            if [ "$code" -eq 0 ]; then echo "**No changes.** La infraestructura coincide con el código."; fi
+            echo "| Recurso | Acción |"
+            echo "|---|---|"
+            terraform show -json tfplan | jq -r '.resource_changes[] | select(.change.actions != ["no-op"]) | "| `\(.address)` | \(.change.actions | join(" → ")) |"'
+            echo ""
+            grep -E "^Plan:|No changes" plan.txt || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Guardar plan para la autorización
+        uses: actions/upload-artifact@v4
+        with:
+          name: plan-${{ github.run_id }}
+          path: |
+            terraform/tfplan
+            terraform/plan.txt
+          retention-days: 1
+
+  apply:
+    name: Apply autorizado y espera del controlador
+    needs: plan
+    if: >-
+      needs.plan.outputs.has_changes == 'true' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' && inputs.operation != 'plan'))
+    runs-on: ubuntu-latest
+    environment:
+      name: produccion
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Enmascarar cuenta
+        run: |
+          ACC=$(aws sts get-caller-identity --query Account --output text)
+          echo "::add-mask::$ACC"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan-${{ github.run_id }}
+          path: terraform
+
+      - name: terraform init
+        working-directory: terraform
+        run: |
+          terraform init -no-color -lockfile=readonly \
+            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+            -backend-config="key=$STATE_KEY" \
+            -backend-config="region=$AWS_REGION" \
+            -backend-config="encrypt=true" \
+            -backend-config="use_lockfile=true"
+
+      - name: Identidad del despliegue (antes del apply)
+        id: ctx
+        working-directory: terraform
+        run: |
+          X=$(sed -nE 's/^x *= *([0-9]+).*/\1/p' terraform.tfvars)
+          COURSE=$(sed -nE 's/^course *= *"([^"]+)".*/\1/p' terraform.tfvars)
+          VERSION=$(sed -nE 's/^app_version *= *"([^"]+)".*/\1/p' terraform.tfvars)
+          STUDENT=$(printf 'a%03d' "$X")
+          {
+            echo "x=$X"; echo "course=$COURSE"; echo "student=$STUDENT"; echo "version=$VERSION"
+            echo "prefix=na-u2-$COURSE-$STUDENT"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: terraform apply (plan autorizado)
+        working-directory: terraform
+        run: |
+          echo "INICIO_APPLY_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a ../apply.log
+          echo "APPLY_START_EPOCH=$(date +%s)" >> "$GITHUB_ENV"
+          terraform apply -no-color -lock-timeout=120s tfplan | tee -a ../apply.log
+          echo "FIN_APPLY_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a ../apply.log
+
+      - name: Esperar resultado real del controlador (Instance Refresh) y destinos
+        if: inputs.operation != 'destroy'
+        run: |
+          bash scripts/wait_refresh.sh "${{ steps.ctx.outputs.prefix }}" "$APPLY_START_EPOCH" 2400 | tee wait_refresh.log
+
+      - name: Verificación HTTP/funcional por el endpoint (DNS del ALB)
+        if: inputs.operation != 'destroy'
+        run: |
+          ENDPOINT=$(terraform -chdir=terraform output -raw portal_endpoint)
+          echo "Endpoint: $ENDPOINT"
+          bash scripts/verify_portal.sh "$ENDPOINT" "${{ steps.ctx.outputs.version }}" \
+            "${{ steps.ctx.outputs.student }}" "${{ steps.ctx.outputs.course }}" "${{ steps.ctx.outputs.x }}" 15 | tee verify_portal.log
+          {
+            echo "## Resultado U2"
+            echo "- Endpoint: $ENDPOINT"
+            echo "- Versión esperada: ${{ steps.ctx.outputs.version }}"
+            echo '```'
+            tail -n 25 wait_refresh.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comprobación independiente de limpieza
+        if: inputs.operation == 'destroy'
+        run: bash scripts/verify_cleanup.sh "${{ steps.ctx.outputs.prefix }}" | tee verify_cleanup.log
+
+      - name: Conservar registros de la ejecución
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: registros-apply-${{ github.run_id }}
+          path: |
+            apply.log
+            wait_refresh.log
+            verify_portal.log
+            verify_cleanup.log
+          if-no-files-found: ignore
+          retention-days: 30

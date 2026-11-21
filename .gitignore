@@ -1,0 +1,35 @@
+# Terraform: directorios locales, state, respaldos y planes binarios
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+tfplan
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Configuración local del backend (contiene el nombre real del bucket)
+terraform/backend.hcl
+
+# Credenciales, claves y variables de entorno
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+.aws/
+credentials
+
+# Entregables generados (se suben a EVA, no al repositorio)
+EVU2_*.zip
+EVU2_*.pdf
+
+# Marcadores temporales de observación
+evidencias/*.STOP
+__pycache__/
