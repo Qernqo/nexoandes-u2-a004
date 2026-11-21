@@ -1,0 +1,18 @@
+Comprobación de limpieza AWS | prefijo na-u2-c50-a004 | 2026-11-21T17:30:28Z
+EC2 no terminadas (na-u2-c50-a004-ec2) ELIMINADO
+Auto Scaling Group                     ELIMINADO
+Launch Template                        ELIMINADO
+Application Load Balancer              ELIMINADO
+Target Group                           ELIMINADO
+Security Groups                        ELIMINADO
+Subredes                               ELIMINADO
+Internet Gateway                       ELIMINADO
+VPC                                    ELIMINADO
+Volúmenes EBS del Portal              ELIMINADO
+ENI del Portal                         ELIMINADO
+
+Consulta complementaria por tags (alumno=a004, fase=U2). La API de etiquetas puede
+mostrar por unos minutos recursos ya eliminados; prevalecen las consultas anteriores.
+arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-01a583d98dfae1c42	arn:aws:ec2:us-east-1:********9245:network-interface/eni-00e994c6b5e717eb6	arn:aws:ec2:us-east-1:********9245:network-interface/eni-08c4f6682397198bd	arn:aws:ec2:us-east-1:********9245:volume/vol-0a32b1861ae3a507d	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-03f69627f7465b5da	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-0e116d53fdd81b7fe	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-021d597cd83fa23fd	arn:aws:s3:::na-u2-c50-a004-tfstate-66e7c6	arn:aws:ec2:us-east-1:********9245:instance/i-0339c4e2fa24edf99	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-0395e37390df3a8d2	arn:aws:ec2:us-east-1:********9245:volume/vol-03aab68f89eb62a2b	arn:aws:ec2:us-east-1:********9245:instance/i-02b33e9a24ef042f9
+
+RESULTADO: sin recursos evaluados presentes (2026-11-21T17:30:39Z)

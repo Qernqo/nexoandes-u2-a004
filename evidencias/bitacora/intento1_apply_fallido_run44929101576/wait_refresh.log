@@ -1,0 +1,14 @@
+[2026-11-21T17:22:53Z] Controlador: Instance Refresh de na-u2-c50-a004-asg | Target Group: na-u2-c50-a004-tg
+[2026-11-21T17:22:56Z] refresh=- estado=SinRefresh avance=-% | LT del ASG=1 | healthy=0/2 | destinos: i-0339c4e2fa24edf99:initial i-02b33e9a24ef042f9:initial
+[2026-11-21T17:23:14Z] refresh=- estado=SinRefresh avance=-% | LT del ASG=1 | healthy=2/2 | destinos: i-0339c4e2fa24edf99:healthy i-02b33e9a24ef042f9:healthy
+[2026-11-21T17:23:14Z] ESTABLE: destinos healthy=2 (capacidad deseada 2) en LT versión 1
+[2026-11-21T17:23:14Z] Esta ejecución no inició un Instance Refresh (creación inicial o cambio sin plantilla nueva).
+[2026-11-21T17:23:14Z] Instancias en servicio:
+----------------------------------------------------------------------------------------------------
+|                                         DescribeInstances                                        |
++---------------------+--------------+-----+-----------------------------+----------+--------------+
+|         ID          |  IPPrivada   | LT  |           Lanzada           | Version  |    Zona      |
++---------------------+--------------+-----+-----------------------------+----------+--------------+
+|  i-0339c4e2fa24edf99|  10.4.10.25  |  1  |  2026-11-21T17:21:21+00:00  |  v1      |  us-east-1a  |
+|  i-02b33e9a24ef042f9|  10.4.20.222 |  1  |  2026-11-21T17:21:21+00:00  |  v1      |  us-east-1b  |
++---------------------+--------------+-----+-----------------------------+----------+--------------+

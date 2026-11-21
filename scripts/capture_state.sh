@@ -67,12 +67,16 @@ section() { printf '\n===== %s =====\n' "$1"; }
   section "Prueba HTTP por el endpoint de servicio"
   DNS=$(alb_dns "$PREFIX")
   echo "Endpoint: http://$DNS"
+  body=$(mktemp)
   for _ in 1 2 3 4 5 6; do
-    curl -sS --max-time 5 -w '  <- HTTP %{http_code}\n' "http://$DNS/api/check" \
-      | jq -c '{observed_at_utc,version,functional_profile,passed,student,course,x,provider,build_ref,resource_id,private_ip,location,hostname,artifact_sha256,metadata_age_seconds}' 2>/dev/null \
-      || echo "  (sin respuesta JSON)"
+    # Cuerpo y código HTTP por separado: -w mezclado con el JSON hacía fallar a jq.
+    code=$(curl -sS --max-time 5 -o "$body" -w '%{http_code}' "http://$DNS/api/check" 2>/dev/null) || code="${code:-000}"
+    json=$(jq -c '{observed_at_utc,version,functional_profile,passed,student,course,x,provider,build_ref,resource_id,private_ip,location,hostname,artifact_sha256,metadata_age_seconds}' "$body" 2>/dev/null) \
+      || json="(sin respuesta JSON)"
+    echo "HTTP $code $json"
     sleep 2
   done
+  rm -f "$body"
 } 2>&1 | mask_account | tee "$OUT"
 
 echo
