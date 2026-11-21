@@ -22,6 +22,14 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | 18:19:47Z | Merge PR #6 → run 44933633166 aprobado; LT versión 2 creada | — |
 | 18:19:58Z | **Incidente (intento v2):** apply falla: `AccessDenied … autoscaling:StartInstanceRefresh … explicit deny in a service control policy`. El ASG quedó apuntando a LT 2 pero sin reemplazar instancias; servicio sin impacto: 525 respuestas HTTP 200 v1, 0 fallos, 2/2 healthy | `bitacora/intento_v2_refresh_denegado_run44933633166/` |
 | 18:21Z | Observadores detenidos. Decisión (Anexo B, adaptación documentada): sustituir Instance Refresh por **reemplazo inmutable del ASG** (create_before_destroy, nombre `-asg-ltN`, mismo TG); adaptar scripts que suponían nombre fijo de ASG y refresh | Adenda §9 de `docs/plan_cambio_u2.md` |
+| 18:30Z | PR #7 (adenda §9 + scripts adaptados) fusionado ANTES del reintento | C19b |
+| 18:32:31Z | Inicio de observadores `actualizacion_v2` (reintento) | — |
+| 18:35Z | PR #8 (módulo: ASG `-asg-ltN` + create_before_destroy) fusionado → run 44936296857: plan 1 add / 1 change / 1 destroy, build_ref 9495888; aprobado | C20 |
+| 18:41:44Z | **Inicio del controlador**: primer «Launching» del ASG `na-u2-c50-a004-asg-lt3` (LT versión 3 = v2 build 9495888) | `E05_tiempos_controlador.txt` |
+| 18:42:37Z–18:43:49Z | Terraform elimina el ASG anterior: terminación de las 2 instancias v1 (draining 30 s) | C22, C24 |
+| 18:44:10Z / 18:44:13Z | Apply complete! 1 added, 1 changed, 1 destroyed · **ESTABLE** (2/2 healthy en LT 3); verify_portal 15 v2, 0 fallos | C21, `E05_registros_pipeline/` |
+| 18:47:20Z | Observadores detenidos (+3 min). analyze_window: **ACEPTADO** (0 fallos, healthy mín. 2 / máx. 4, gap máx. 2,02 s) | `analisis_actualizacion_v2.md` |
+| 18:49Z | Plan posterior (run 44937586970): **No changes** | C28 |
 
 ## Tabla de sesión E03 (v1)
 
@@ -33,3 +41,14 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | build_ref | e3f129c |
 | SHA-256 v1 | 82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa |
 | VPC / subredes | vpc-00dff4d6803b806d1 10.4.0.0/16 · 10.4.10.0/24 (1a) · 10.4.20.0/24 (1b) |
+
+## Tabla de sesión E05 (v2)
+
+| Dato | Valor |
+|---|---|
+| ASG | na-u2-c50-a004-asg-lt3 (el anterior `na-u2-c50-a004-asg` eliminado) |
+| Instancias v2 | i-064b4796bae7c7f7c (us-east-1a, 10.4.10.86) · i-0554bb08f520eacb5 (us-east-1b, 10.4.20.88) |
+| Instancias v1 terminadas | i-07a40b5345ffa6ec0 · i-05d02cc45da89f5a4 |
+| Launch Template | versión 3 «v2 build 9495888» (versión 2 «v2 build a717a65» nunca atendió tráfico) |
+| SHA-256 v2 | 67bed5e66dc15cdc1b6d69a6963e44f011220a3d9f4fd1c24a9887c676f7b017 |
+| Perfil | extended |

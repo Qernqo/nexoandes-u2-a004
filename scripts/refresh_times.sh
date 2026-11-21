@@ -19,7 +19,7 @@ while read -r name; do
   act=$(aws autoscaling describe-scaling-activities --auto-scaling-group-name "$name" \
     --include-deleted-groups --max-items 100 --output json 2>/dev/null || echo '{"Activities":[]}')
   [ "$(jq '.Activities | length' <<<"$act")" -gt 0 ] || continue
-  jq -r --arg n "$name" --arg vig "$(grep -qw -- "$name" <<<"$current" && echo si || echo no)" '
+  jq -r --arg n "$name" --arg vig "$(case " $current " in *" $name "*) echo si ;; *) echo no ;; esac)" '
     (.Activities | map(select(.Description|test("^Launching")))) as $l
     | (.Activities | map(select(.Description|test("^Terminating")))) as $t
     | [ $n, $vig,

@@ -1,0 +1,17 @@
+UTC                      HTTP VER PERFIL    ID                   IP_PRIVADA      ZONA        SHA256
+2026-11-21T18:44:15Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:17Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+2026-11-21T18:44:19Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:21Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:23Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+2026-11-21T18:44:25Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+2026-11-21T18:44:28Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+2026-11-21T18:44:30Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:32Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:34Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+2026-11-21T18:44:36Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:38Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:40Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+2026-11-21T18:44:42Z     200  v2  extended  i-064b4796bae7c7f7c  10.4.10.86      us-east-1a  67bed5e66dc1
+2026-11-21T18:44:44Z     200  v2  extended  i-0554bb08f520eacb5  10.4.20.88      us-east-1b  67bed5e66dc1
+Muestras: 15 | fallos: 0 | versión esperada: v2 | identidad: a004/c50/X=4

@@ -1,0 +1,6 @@
+ASG                        Vigente   PrimerLanzamientoUTC   UltimoLanzamientoFin   PrimeraTerminacion     UltimaTerminacionFin   Lanz/Term
+na-u2-c50-a004-asg         no        2026-11-21T17:34:11Z   2026-11-21T17:34:16Z   2026-11-21T18:42:37Z   2026-11-21T18:43:49Z   2/2
+na-u2-c50-a004-asg-lt3     si        2026-11-21T18:41:44Z   2026-11-21T18:41:49Z   -                      -                      2/0
+
+Para analyze_window.py: --start = PrimerLanzamientoUTC del ASG nuevo;
+--stable = la más tardía entre UltimaTerminacionFin del ASG anterior y la línea ESTABLE de wait_refresh.log.

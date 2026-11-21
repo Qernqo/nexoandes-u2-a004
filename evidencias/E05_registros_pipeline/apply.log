@@ -1,0 +1,64 @@
+INICIO_APPLY_UTC=2026-11-21T18:41:31Z
+module.portal.aws_launch_template.portal: Modifying... [id=lt-078862d5af9becb83]
+module.portal.aws_launch_template.portal: Modifications complete after 6s [id=lt-078862d5af9becb83]
+module.portal.aws_autoscaling_group.portal: Creating...
+module.portal.aws_autoscaling_group.portal: Still creating... [00m10s elapsed]
+module.portal.aws_autoscaling_group.portal: Still creating... [00m20s elapsed]
+module.portal.aws_autoscaling_group.portal: Still creating... [00m30s elapsed]
+module.portal.aws_autoscaling_group.portal: Still creating... [00m40s elapsed]
+module.portal.aws_autoscaling_group.portal: Creation complete after 46s [id=na-u2-c50-a004-asg-lt3]
+module.portal.aws_autoscaling_group.portal (deposed object d36ccf75): Destroying... [id=na-u2-c50-a004-asg]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 00m10s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 00m20s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 00m30s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 00m40s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 00m50s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 01m00s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 01m10s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 01m20s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 01m30s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg, 01m41s elapsed]
+module.portal.aws_autoscaling_group.portal: Destruction complete after 1m44s
+
+Apply complete! Resources: 1 added, 1 changed, 1 destroyed.
+
+Outputs:
+
+compute = {
+  "alb_arn" = "arn:aws:elasticloadbalancing:us-east-1:****9245:loadbalancer/app/na-u2-c50-a004-alb/96f4819a35613e91"
+  "asg_name" = "na-u2-c50-a004-asg-lt3"
+  "base_capacity" = 2
+  "launch_template_id" = "lt-078862d5af9becb83"
+  "launch_template_version" = 3
+  "max_capacity" = 4
+  "target_group_arn" = "arn:aws:elasticloadbalancing:us-east-1:****9245:targetgroup/na-u2-c50-a004-tg/70c992e2d36f7cf7"
+}
+context = {
+  "alumno" = "a004"
+  "app_version" = "v2"
+  "build_ref" = "9495888"
+  "curso" = "c50"
+  "name_prefix" = "na-u2-c50-a004"
+  "proveedor" = "aws"
+  "region" = "us-east-1"
+  "x" = 4
+}
+network = {
+  "subnets" = {
+    "a" = {
+      "az" = "us-east-1a"
+      "cidr" = "10.4.10.0/24"
+      "id" = "subnet-097d37f465a6c4907"
+    }
+    "b" = {
+      "az" = "us-east-1b"
+      "cidr" = "10.4.20.0/24"
+      "id" = "subnet-0ca8bc39db6f273f7"
+    }
+  }
+  "vpc_cidr" = "10.4.0.0/16"
+  "vpc_id" = "vpc-00dff4d6803b806d1"
+}
+portal_endpoint = "http://na-u2-c50-a004-alb-101744380.us-east-1.elb.amazonaws.com"
+user_data_bytes = 15566
+FIN_APPLY_UTC=2026-11-21T18:44:10Z
