@@ -1,0 +1,4 @@
+INICIO_APPLY_UTC=2026-11-21T18:19:47Z
+module.portal.aws_launch_template.portal: Modifying... [id=lt-078862d5af9becb83]
+module.portal.aws_launch_template.portal: Modifications complete after 6s [id=lt-078862d5af9becb83]
+module.portal.aws_autoscaling_group.portal: Modifying... [id=na-u2-c50-a004-asg]

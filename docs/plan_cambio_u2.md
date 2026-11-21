@@ -76,3 +76,42 @@ recuperación en segundos, se elegiría blue-green, asumiendo el doble de capaci
 | Target Group | na-u2-c50-a004-tg · 2 healthy · health check /api/check |
 | Plan posterior | `No changes` (run 44931248948) |
 | Registro | `evidencias/*_E04_antes_del_cambio_estado.txt` |
+
+---
+
+## 9. ADENDA (declarada 2026-11-21T18:27:07Z, ANTES de reintentar el cambio) — controlador adaptado
+
+**Hecho que la motiva.** El 2026-11-21 a las 18:19:58Z el apply del PR #6 (run 44933633166) falló:
+`AccessDenied … not authorized to perform: autoscaling:StartInstanceRefresh … with an explicit deny in a service control policy`.
+La cuenta del Learner Lab prohíbe Instance Refresh por SCP (restricción del proveedor, no del código).
+Efecto real: se creó la versión 2 de la Launch Template y el ASG quedó apuntando a ella, pero **no se reemplazó ninguna instancia**;
+las 2 instancias v1 siguieron atendiendo (525 respuestas HTTP 200 v1, 0 fallos, ≥ 2 healthy en todo el registro).
+Evidencia: `evidencias/bitacora/intento_v2_refresh_denegado_run44933633166/`.
+
+**Estrategia adaptada: reemplazo inmutable del ASG sobre el mismo Target Group.**
+
+| Criterio | Reemplazo de ASG (create_before_destroy) — **elegida por restricción** | Rolling Instance Refresh (plan original) |
+|---|---|---|
+| Disponible en el Learner Lab | Sí (Create/DeleteAutoScalingGroup ya usados en el despliegue y destroy) | **No** (denegado por SCP) |
+| Inmutable | Sí: ASG e instancias nuevas; nunca se modifica una instancia | Sí |
+| Controlador único | Terraform desde el pipeline (crea `na-u2-c50-a004-asg-ltN`, espera, elimina el anterior) | Instance Refresh de AWS |
+| Capacidad | Base 2 healthy; temporal +2 (máx. 4 t3.micro: 2 del ASG anterior + 2 del nuevo) | Igual (+2) |
+| Mezcla v1/v2 | Sí, durante la superposición (admitida) | Sí |
+| Detención | **Automática**: si el ASG nuevo no alcanza 2 destinos healthy en el ALB en 15 min (`min_elb_capacity`), el apply falla y el ASG anterior **no se elimina** | Cancelar el refresh |
+| Recuperación | Nueva versión de plantilla con v1 → otro ASG nuevo (mismo procedimiento) | Nuevo refresh |
+
+**Parámetros que cambian respecto de §3:**
+- Controlador: reemplazo de ASG; el nombre del ASG incluye la versión de plantilla (`na-u2-c50-a004-asg-lt2` para v2, `-lt3` para el retorno a v1).
+- Se elimina el bloque `instance_refresh`; se agrega `lifecycle { create_before_destroy = true }`.
+- Plan esperado del cambio: `1 to add, 0 to change, 1 to destroy` (solo el ASG; ALB, TG, VPC y SG sin cambios; mismo endpoint).
+  La Launch Template versión 2 ya existe (creada en el intento denegado) y no cambia.
+- Inicio del intervalo = primer «Launching» del ASG nuevo; estabilización = la más tardía entre la última «Terminating» del ASG
+  anterior y la línea ESTABLE (`refresh_times.sh` adaptado); el resto de la ventana (−60 s / +120 s, 2 s, timeout 5 s) no cambia.
+
+**Aceptación (sustituye el punto 5 de §4):** apply terminado sin error, un único ASG vigente (`-lt2`) con 2 destinos healthy en LT 2,
+ASG anterior eliminado, solo v2 tras estabilizar, 0 fallos funcionales, ≥ 2 healthy en cada consulta y plan posterior `No changes`.
+
+**Detención adicional:** ≥ 3 fallos HTTP consecutivos o healthy < 2 → cancelar la ejecución del pipeline solo si el ASG anterior
+aún existe (Terraform no lo habrá eliminado), registrar y evaluar.
+
+**Restricción que cambiaría la decisión:** si el docente habilita Instance Refresh en la cuenta, se vuelve al plan original (§3).

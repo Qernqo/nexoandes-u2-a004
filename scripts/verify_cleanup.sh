@@ -25,8 +25,7 @@ echo "Comprobación de limpieza AWS | prefijo $PREFIX | $(utc)"
 check "EC2 no terminadas ($PREFIX-ec2)" "$(aws ec2 describe-instances \
   --filters "Name=tag:Name,Values=$PREFIX-ec2" "Name=instance-state-name,Values=pending,running,stopping,stopped,shutting-down" \
   --query 'Reservations[].Instances[].InstanceId' --output text)"
-check "Auto Scaling Group" "$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names "$(asg_name "$PREFIX")" \
-  --query 'AutoScalingGroups[].AutoScalingGroupName' --output text)"
+check "Auto Scaling Group(s) $PREFIX-asg*" "$(asg_names "$PREFIX" | tr '\n' ' ')"
 check "Launch Template" "$(aws ec2 describe-launch-templates --filters "Name=launch-template-name,Values=$PREFIX-lt" \
   --query 'LaunchTemplates[].LaunchTemplateId' --output text)"
 check "Application Load Balancer" "$(aws elbv2 describe-load-balancers \

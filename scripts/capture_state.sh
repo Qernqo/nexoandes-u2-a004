@@ -42,9 +42,9 @@ section() { printf '\n===== %s =====\n' "$1"; }
   aws elbv2 describe-target-health --target-group-arn "$TG" \
     --query 'TargetHealthDescriptions[].{Instancia:Target.Id,Puerto:Target.Port,Estado:TargetHealth.State,Motivo:TargetHealth.Reason}' --output table
 
-  section "Controlador: Auto Scaling Group"
-  aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names "$ASG" \
-    --query 'AutoScalingGroups[].{ASG:AutoScalingGroupName,Min:MinSize,Deseada:DesiredCapacity,Max:MaxSize,LT:LaunchTemplate.LaunchTemplateName,LTVersion:LaunchTemplate.Version,HealthCheck:HealthCheckType}' --output table
+  section "Controlador: Auto Scaling Group(s) del prefijo (reemplazo de ASG)"
+  aws autoscaling describe-auto-scaling-groups \
+    --query "sort_by(AutoScalingGroups[?starts_with(AutoScalingGroupName, '$PREFIX-asg')], &CreatedTime)[].{ASG:AutoScalingGroupName,Creado:CreatedTime,Min:MinSize,Deseada:DesiredCapacity,Max:MaxSize,LT:LaunchTemplate.LaunchTemplateName,LTVersion:LaunchTemplate.Version,HealthCheck:HealthCheckType}" --output table
   aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names "$ASG" \
     --query 'AutoScalingGroups[0].Instances[].{Instancia:InstanceId,Zona:AvailabilityZone,Ciclo:LifecycleState,Salud:HealthStatus,LTVersion:LaunchTemplate.Version}' --output table
 
@@ -56,9 +56,8 @@ section() { printf '\n===== %s =====\n' "$1"; }
   aws ec2 describe-launch-template-versions --launch-template-name "$PREFIX-lt" \
     --query 'LaunchTemplateVersions[].{Version:VersionNumber,Default:DefaultVersion,Creada:CreateTime,Descripcion:VersionDescription,AMI:LaunchTemplateData.ImageId,Tipo:LaunchTemplateData.InstanceType}' --output table
 
-  section "Instance Refresh (últimos 5)"
-  aws autoscaling describe-instance-refreshes --auto-scaling-group-name "$ASG" --max-records 5 \
-    --query 'InstanceRefreshes[].{ID:InstanceRefreshId,Estado:Status,Avance:PercentageComplete,Inicio:StartTime,Fin:EndTime,MinHealthy:Preferences.MinHealthyPercentage,MaxHealthy:Preferences.MaxHealthyPercentage}' --output table
+  section "Controlador: tiempos del reemplazo de ASG (Instance Refresh denegado por SCP del Learner Lab)"
+  bash "$(dirname "$0")/refresh_times.sh" "$PREFIX"
 
   section "Actividades de escalado (últimas 10: distingue reemplazos automáticos)"
   aws autoscaling describe-scaling-activities --auto-scaling-group-name "$ASG" --max-items 10 \
