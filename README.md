@@ -10,7 +10,7 @@ Identidad de laboratorio: **X=4 · alumno a004 · curso c50** · prefijo `na-u2-
 |---|---|
 | `terraform/` | Orquestación root: `versions.tf`, `providers.tf`, `variables.tf`, `main.tf`, `outputs.tf`, `terraform.tfvars`, `.terraform.lock.hcl` |
 | `terraform/modules/aws_network` | VPC 10.X.0.0/16, subred A 10.X.10.0/24 y B 10.X.20.0/24 en zonas distintas, IGW y rutas |
-| `terraform/modules/aws_portal` | SG-ALB / SG-EC2, ALB + listener HTTP 80, Target Group (`/api/check`), Launch Template versionada (IMDSv2), ASG con Instance Refresh |
+| `terraform/modules/aws_portal` | SG-ALB / SG-EC2, ALB + listener HTTP 80, Target Group (`/api/check`), Launch Template versionada (IMDSv2), ASG `-asg-ltN` reemplazado por versión (create_before_destroy) |
 | `terraform/templates/user_data_u2.sh.tpl` | Artefacto docente del Portal (sin modificar), renderizado con `templatefile()` |
 | `.github/workflows/infra-u2.yml` | Pipeline: controles → plan → aprobación (`produccion`) → apply → espera del controlador → verificación |
 | `scripts/` | Observación (`observe_http.sh`, `observe_aws.sh`), análisis (`analyze_window.py`), consultas independientes (`capture_state.sh`, `refresh_times.sh`, `verify_cleanup.sh`), espera/verificación del pipeline, higiene y ZIP |
@@ -29,7 +29,7 @@ flowchart LR
     GA <-- lock/state --> S3[(S3 state<br/>use_lockfile)]
   end
   GA -. API AWS .-> LT[Launch Template<br/>v1/v2 versionada]
-  GA -. API AWS .-> ASG[ASG base 2 / máx 4<br/>Instance Refresh]
+  GA -. API AWS .-> ASG[ASG -asg-ltN base 2 / máx 4<br/>reemplazo create_before_destroy]
   LT -.-> ASG
   subgraph VPC["VPC 10.4.0.0/16"]
     IGW[IGW] --> ALB[ALB :80] --> TG[Target Group<br/>/api/check]
@@ -49,10 +49,15 @@ entre nubes.
 
 ## 3. Decisiones principales
 
-- **Estrategia:** rolling con *Instance Refresh* (min healthy 100 %, max healthy 200 %): se lanzan instancias
-  nuevas antes de retirar las anteriores; capacidad base 2, temporal hasta +2.
-- **Controlador único:** el Instance Refresh del ASG. Terraform lo inicia al cambiar la versión de la
-  Launch Template; `scripts/wait_refresh.sh` espera su resultado real (el éxito de `apply` no basta).
+- **Estrategia (adaptada):** la estrategia planificada era rolling con *Instance Refresh*, pero la SCP de la
+  cuenta del Learner Lab **deniega `autoscaling:StartInstanceRefresh`** (run 44933633166, ver bitácora y adenda §9
+  de `docs/plan_cambio_u2.md`). Se implementó un **reemplazo inmutable del ASG**: el nombre del ASG incluye la
+  versión de la Launch Template (`na-u2-c50-a004-asg-ltN`) y usa `create_before_destroy`; el ASG nuevo se registra
+  en el mismo Target Group, Terraform espera 2 destinos healthy (`min_elb_capacity`) y solo entonces elimina el
+  anterior. Capacidad base 2, temporal hasta +2 (4 durante la superposición).
+- **Controlador único:** Terraform desde el pipeline (crear ASG nuevo → esperar → eliminar el anterior);
+  `scripts/wait_refresh.sh` espera el resultado real (un solo ASG, destinos healthy en la versión nueva).
+  Si el ASG nuevo no alcanza la capacidad, el apply falla y el anterior sigue atendiendo (detención automática).
 - **Inmutabilidad:** cada versión del Portal es una versión nueva de la Launch Template (AMI fijada +
   bootstrap + `portal_version` + `build_ref`). No hay cambios manuales en instancias ni acceso SSH.
 - **Persistencia:** el Portal no guarda datos de negocio; las instancias son reemplazables.
@@ -74,7 +79,7 @@ terraform plan -var "build_ref=$(git log -1 --format=%h -- .)"
 # Observación de un cambio (desde la raíz del repo)
 bash scripts/observe_http.sh "http://<DNS-ALB>" actualizacion_v2
 bash scripts/observe_aws.sh  na-u2-c50-a004     actualizacion_v2
-bash scripts/refresh_times.sh na-u2-c50-a004
+bash scripts/refresh_times.sh na-u2-c50-a004    # inicio/fin del reemplazo de ASG
 python3 scripts/analyze_window.py --http evidencias/<...>_http.csv --aws evidencias/<...>_aws.csv \
   --start <InicioUTC> --stable <EstableUTC> --from-version v1 --target v2 \
   --student a004 --course c50 --x 4 --base 2 --out evidencias/analisis_v2.md
@@ -84,7 +89,9 @@ Los despliegues evaluados se ejecutan **solo por el pipeline** (merge a `main` o
 
 ## 5. Referencias
 
-- AWS — Instance refresh: https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-instance-refresh.html
+- AWS — Instance refresh (estrategia planificada, denegada por SCP en el Learner Lab): https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-instance-refresh.html
+- AWS — Service control policies: https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html
+- Terraform — `create_before_destroy`: https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle
 - AWS — User data e IMDSv2: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
 - Terraform — `aws_autoscaling_group`: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group
 - Terraform — Backend S3 (`use_lockfile`): https://developer.hashicorp.com/terraform/language/backend/s3
@@ -92,6 +99,17 @@ Los despliegues evaluados se ejecutan **solo por el pipeline** (merge a `main` o
 
 ## 6. Declaración de uso de IA
 
-Se utilizó Claude (Anthropic) para generar la guía de trabajo, el código base de Terraform, el pipeline,
-los scripts de observación y la plantilla de la Ficha. El código fue revisado, ejecutado y ajustado por el
-estudiante; las ejecuciones, registros y capturas son propios. *(Ajustar este texto a su uso real.)*
+Se utilizó Claude (Anthropic) en dos momentos:
+
+1. **Material docente:** la guía de trabajo, el código base de Terraform, el pipeline, los scripts de
+   observación y la plantilla de la Ficha fueron generados con Claude (código base entregado).
+2. **Ejecución del laboratorio:** Claude Code (asistente en terminal) ejecutó, bajo supervisión del estudiante,
+   los pasos en el equipo Ubuntu: instalación de herramientas, creación del bucket del state, configuración del
+   environment y la protección de rama por la API de GitHub, ramas/commits/PR, observadores y análisis.
+   También diagnosticó los dos incidentes (rol vinculado de Auto Scaling y SCP que deniega Instance Refresh) y
+   propuso/implementó las adaptaciones: `pipefail` en el pipeline, controlador por reemplazo de ASG, ajustes en
+   los scripts (`lib.sh`, `observe_aws.sh`, `wait_refresh.sh`, `refresh_times.sh`, `capture_state.sh`,
+   `verify_cleanup.sh`) y la adenda del plan de cambio.
+
+Las **aprobaciones de despliegue** en el environment `produccion`, las decisiones ante cada incidente y las
+capturas de pantalla fueron realizadas por el estudiante. Los registros provienen de ejecuciones reales.

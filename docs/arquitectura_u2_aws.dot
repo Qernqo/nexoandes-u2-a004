@@ -10,26 +10,26 @@ digraph U2 {
     label="Gestión (plano de control)"; style="rounded,dashed"; color="#6b7c8f"; fontcolor="#33475b";
     dev   [label="PC del estudiante\nTerraform 1.13 · Git · AWS CLI\nobserve_http.sh / observe_aws.sh"];
     repo  [label="GitHub · repositorio\nramas + PR (revisión)\nterraform/ · scripts/ · .lock.hcl"];
-    gha   [label="GitHub Actions · infra-u2-aws\ncontroles → plan → aprobación\n(environment produccion) → apply\n→ wait_refresh → verify_portal", fillcolor="#eef4fb"];
-    state [label="S3 · state remoto\nna-u2-c50-a004-tfstate-*\nuse_lockfile · cifrado · versionado", fillcolor="#fff8e6"];
+    gha   [label="GitHub Actions · infra-u2-aws\ncontroles → plan → aprobación\n(environment produccion) → apply\n→ wait_refresh (reemplazo ASG) → verify_portal", fillcolor="#eef4fb"];
+    state [label="S3 · state remoto\nna-u2-c50-a004-tfstate-66e7c6\nuse_lockfile · cifrado · versionado", fillcolor="#fff8e6"];
     sec   [label="Secrets del repo\ncredenciales temporales\nLearner Lab (~4 h)", fillcolor="#fff8e6"];
   }
 
   subgraph cluster_aws {
     label="AWS · cuenta Learner Lab · us-east-1"; style="rounded"; color="#d9822b"; fontcolor="#b35c00";
     api [label="APIs AWS (HTTPS 443)\nEC2 · ELBv2 · Auto Scaling"];
-    lt  [label="Launch Template na-u2-c50-a004-lt\nAMI Ubuntu fijada · t3.micro · IMDSv2\nuser_data = user_data_u2.sh.tpl (v1|v2)\nversiones: 1=v1 · 2=v2 · 3=v1 (retorno)", fillcolor="#fdf1e6"];
+    lt  [label="Launch Template na-u2-c50-a004-lt\nAMI Ubuntu fijada · t3.micro · IMDSv2\nuser_data = user_data_u2.sh.tpl (v1|v2)\nversiones reales: 1=v1 e3f129c · 2=v2 a717a65 (intento denegado)\n3=v2 9495888 · 4=v1 10fffda (retorno)", fillcolor="#fdf1e6"];
 
     subgraph cluster_vpc {
       label="VPC na-u2-c50-a004-aws-vpc · 10.4.0.0/16"; style="rounded"; color="#8c4fd6"; fontcolor="#6a35b0";
       igw [label="Internet Gateway\nRT pública: 10.4.0.0/16 local · 0.0.0.0/0 → IGW"];
       alb [label="ALB internet-facing na-u2-c50-a004-alb\nlistener HTTP 80 → Target Group\nSG-ALB: 80 desde orígenes autorizados", fillcolor="#f3ecfc"];
       tg  [label="Target Group na-u2-c50-a004-tg\nhealth check GET /api/check (200)\nderegistration delay 30 s"];
-      asg [label="ASG na-u2-c50-a004-asg (controlador único)\nbase 2 · máx 4 (temporal +2)\nInstance Refresh Rolling: min 100 % · max 200 % · warmup 120 s", fillcolor="#fdf1e6"];
+      asg [label="ASG na-u2-c50-a004-asg-ltN (controlador único: reemplazo de ASG)\nbase 2 · máx 4 en la superposición (temporal +2)\ncreate_before_destroy: -asg → -lt3 (v2) → -lt4 (v1)\n(Instance Refresh denegado por SCP del Learner Lab)", fillcolor="#fdf1e6"];
       subgraph cluster_a { label="Subred A 10.4.10.0/24 · zona A"; style="rounded,dashed"; color="#999999";
-        ec2a [label="EC2 Portal (v1 / v2)\nIP privada real 10.4.10.x\nSG-EC2: 80 solo desde SG-ALB"]; }
+        ec2a [label="EC2 Portal (v1 / v2)\nIP privada real 10.4.10.x (1a)\nSG-EC2: 80 solo desde SG-ALB"]; }
       subgraph cluster_b { label="Subred B 10.4.20.0/24 · zona B"; style="rounded,dashed"; color="#999999";
-        ec2b [label="EC2 Portal (v1 / v2)\nIP privada real 10.4.20.x\nsin SSH"]; }
+        ec2b [label="EC2 Portal (v1 / v2)\nIP privada real 10.4.20.x (1b)\nsin SSH"]; }
     }
   }
 
