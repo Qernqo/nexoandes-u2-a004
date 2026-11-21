@@ -1,0 +1,4 @@
+ASG                        Vigente   PrimerLanzamientoUTC   UltimoLanzamientoFin   PrimeraTerminacion     UltimaTerminacionFin   Lanz/Term
+na-u2-c50-a004-asg         no        2026-11-21T17:34:11Z   2026-11-21T17:34:16Z   2026-11-21T18:42:37Z   2026-11-21T18:43:49Z   2/2
+na-u2-c50-a004-asg-lt3     no        2026-11-21T18:41:44Z   2026-11-21T18:41:49Z   2026-11-21T19:06:22Z   2026-11-21T19:07:35Z   2/2
+na-u2-c50-a004-asg-lt4     si        2026-11-21T19:05:35Z   2026-11-21T19:05:41Z   -                      -                      2/0

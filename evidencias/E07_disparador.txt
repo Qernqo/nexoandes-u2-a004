@@ -1,0 +1,1 @@
+19:00:45Z — Disparador: ensayo planificado de reversión declarado en el plan de cambio (§6 y adenda §9). Versión utilizable: v1 (SHA-256 82f7e3a976f7…). Acción: PR #10 app_version=v1 → pipeline → LT versión 4 → reemplazo de ASG (-asg-lt4).
