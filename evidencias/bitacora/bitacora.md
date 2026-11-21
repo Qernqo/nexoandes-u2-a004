@@ -37,6 +37,10 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | 19:07:58Z / 19:08:01Z | Apply complete! 1/1/1 · **ESTABLE** 2/2 en LT 4; verify_portal 15 v1, 0 fallos | C30, `E07_registros_pipeline/` |
 | 19:11:05Z | Observadores detenidos. analyze_window: **ACEPTADO** (0 fallos, healthy 2–2, solo v1 tras estabilizar). SHA-256 v1 = E03 | `analisis_recuperacion_v1.md`, C31 |
 | 19:12Z | Plan posterior (run 44939696457): **No changes** (código v1 = AWS v1) | C32 |
+| 19:15Z | Estado final antes de limpiar (`capture_state.sh`): v1, 2 healthy | `*_E08_final_antes_limpieza_estado.txt`, C33 |
+| 19:36Z | Destroy por pipeline (run 44940467727): plan 0 / 0 / 19 to destroy, aprobado | — |
+| 19:38:22Z | `Apply complete! Resources: 0 added, 0 changed, 19 destroyed.` (al aplicar un plan -destroy guardado Terraform imprime «Apply complete», no «Destroy complete») · verify_cleanup en el pipeline: sin recursos | C34, `E08_registros_pipeline/` |
+| 19:39:20Z | Comprobación independiente local `verify_cleanup.sh`: todas las categorías ELIMINADO; state vacío | `E08_verificacion_limpieza.txt`, C35 |
 
 ## Tabla de sesión E03 (v1)
 

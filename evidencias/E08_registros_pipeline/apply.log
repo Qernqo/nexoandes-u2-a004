@@ -1,0 +1,55 @@
+INICIO_APPLY_UTC=2026-11-21T19:37:01Z
+module.portal.aws_vpc_security_group_egress_rule.ec2_out["80"]: Destroying... [id=sgr-02c0c23ffdc2f608d]
+module.portal.aws_vpc_security_group_ingress_rule.ec2_from_alb: Destroying... [id=sgr-0d87c1881d7b8608f]
+module.network.aws_route_table_association.public["a"]: Destroying... [id=rtbassoc-0da2cc35a7d182318]
+module.portal.aws_vpc_security_group_ingress_rule.alb_http["0.0.0.0/0"]: Destroying... [id=sgr-015b242d09589189d]
+module.portal.aws_vpc_security_group_egress_rule.alb_to_ec2: Destroying... [id=sgr-00cef235ee1b8a149]
+module.portal.aws_vpc_security_group_egress_rule.ec2_out["443"]: Destroying... [id=sgr-043c9281281bf555c]
+module.network.aws_route_table_association.public["b"]: Destroying... [id=rtbassoc-041d798006012c3af]
+module.portal.aws_lb_listener.http: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:****9245:listener/app/na-u2-c50-a004-alb/96f4819a35613e91/abcd80b51c8c9750]
+module.portal.aws_autoscaling_group.portal: Destroying... [id=na-u2-c50-a004-asg-lt4]
+module.portal.aws_lb_listener.http: Destruction complete after 0s
+module.portal.aws_lb.portal: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:****9245:loadbalancer/app/na-u2-c50-a004-alb/96f4819a35613e91]
+module.portal.aws_vpc_security_group_ingress_rule.alb_http["0.0.0.0/0"]: Destruction complete after 1s
+module.portal.aws_vpc_security_group_egress_rule.alb_to_ec2: Destruction complete after 1s
+module.portal.aws_vpc_security_group_ingress_rule.ec2_from_alb: Destruction complete after 1s
+module.portal.aws_vpc_security_group_egress_rule.ec2_out["80"]: Destruction complete after 1s
+module.network.aws_route_table_association.public["b"]: Destruction complete after 1s
+module.portal.aws_vpc_security_group_egress_rule.ec2_out["443"]: Destruction complete after 1s
+module.network.aws_route_table_association.public["a"]: Destruction complete after 1s
+module.network.aws_route_table.public: Destroying... [id=rtb-03455f34c2b94fbe0]
+module.network.aws_route_table.public: Destruction complete after 0s
+module.network.aws_internet_gateway.this: Destroying... [id=igw-00c1118ec5681f2f4]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 00m10s elapsed]
+module.portal.aws_lb.portal: Still destroying... [id=arn:aws:elasticloadbalancing:us-east-1:...pp/na-u2-c50-a004-alb/96f4819a35613e91, 00m10s elapsed]
+module.network.aws_internet_gateway.this: Still destroying... [id=igw-00c1118ec5681f2f4, 00m10s elapsed]
+module.portal.aws_lb.portal: Destruction complete after 17s
+module.portal.aws_security_group.alb: Destroying... [id=sg-044c8eaa5c70ff8ed]
+module.portal.aws_security_group.alb: Destruction complete after 1s
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 00m20s elapsed]
+module.network.aws_internet_gateway.this: Still destroying... [id=igw-00c1118ec5681f2f4, 00m20s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 00m30s elapsed]
+module.network.aws_internet_gateway.this: Still destroying... [id=igw-00c1118ec5681f2f4, 00m30s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 00m40s elapsed]
+module.network.aws_internet_gateway.this: Still destroying... [id=igw-00c1118ec5681f2f4, 00m40s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 00m50s elapsed]
+module.network.aws_internet_gateway.this: Still destroying... [id=igw-00c1118ec5681f2f4, 00m50s elapsed]
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 01m00s elapsed]
+module.network.aws_internet_gateway.this: Destruction complete after 59s
+module.portal.aws_autoscaling_group.portal: Still destroying... [id=na-u2-c50-a004-asg-lt4, 01m10s elapsed]
+module.portal.aws_autoscaling_group.portal: Destruction complete after 1m16s
+module.network.aws_subnet.public["a"]: Destroying... [id=subnet-097d37f465a6c4907]
+module.network.aws_subnet.public["b"]: Destroying... [id=subnet-0ca8bc39db6f273f7]
+module.portal.aws_lb_target_group.portal: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:****9245:targetgroup/na-u2-c50-a004-tg/70c992e2d36f7cf7]
+module.portal.aws_launch_template.portal: Destroying... [id=lt-078862d5af9becb83]
+module.portal.aws_lb_target_group.portal: Destruction complete after 0s
+module.portal.aws_launch_template.portal: Destruction complete after 1s
+module.portal.aws_security_group.ec2: Destroying... [id=sg-064157838686b3b74]
+module.network.aws_subnet.public["a"]: Destruction complete after 1s
+module.network.aws_subnet.public["b"]: Destruction complete after 1s
+module.portal.aws_security_group.ec2: Destruction complete after 0s
+module.network.aws_vpc.this: Destroying... [id=vpc-00dff4d6803b806d1]
+module.network.aws_vpc.this: Destruction complete after 1s
+
+Apply complete! Resources: 0 added, 0 changed, 19 destroyed.
+FIN_APPLY_UTC=2026-11-21T19:38:22Z

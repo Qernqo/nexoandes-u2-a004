@@ -1,0 +1,18 @@
+Comprobación de limpieza AWS | prefijo na-u2-c50-a004 | 2026-11-21T19:39:06Z
+EC2 no terminadas (na-u2-c50-a004-ec2) ELIMINADO
+Auto Scaling Group(s) na-u2-c50-a004-asg* ELIMINADO
+Launch Template                        ELIMINADO
+Application Load Balancer              ELIMINADO
+Target Group                           ELIMINADO
+Security Groups                        ELIMINADO
+Subredes                               ELIMINADO
+Internet Gateway                       ELIMINADO
+VPC                                    ELIMINADO
+Volúmenes EBS del Portal              ELIMINADO
+ENI del Portal                         ELIMINADO
+
+Consulta complementaria por tags (alumno=a004, fase=U2). La API de etiquetas puede
+mostrar por unos minutos recursos ya eliminados; prevalecen las consultas anteriores.
+arn:aws:ec2:us-east-1:********9245:instance/i-05d02cc45da89f5a4	arn:aws:ec2:us-east-1:********9245:instance/i-03ec8843710b8c884	arn:aws:ec2:us-east-1:********9245:network-interface/eni-0e171c5cbbff63c7e	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-00cef235ee1b8a149	arn:aws:ec2:us-east-1:********9245:instance/i-07f61c97296adf415	arn:aws:ec2:us-east-1:********9245:network-interface/eni-00e994c6b5e717eb6	arn:aws:ec2:us-east-1:********9245:network-interface/eni-08c4f6682397198bd	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-043c9281281bf555c	arn:aws:ec2:us-east-1:********9245:volume/vol-023f581e48bc142b3	arn:aws:ec2:us-east-1:********9245:volume/vol-077b5579bcf0551da	arn:aws:ec2:us-east-1:********9245:network-interface/eni-05d68e4764221cf13	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-015b242d09589189d	arn:aws:ec2:us-east-1:********9245:volume/vol-0771faf661e023b3e	arn:aws:ec2:us-east-1:********9245:volume/vol-059753f289118386c	arn:aws:ec2:us-east-1:********9245:volume/vol-09cd7403ce496f167	arn:aws:s3:::na-u2-c50-a004-tfstate-66e7c6	arn:aws:ec2:us-east-1:********9245:instance/i-0339c4e2fa24edf99	arn:aws:ec2:us-east-1:********9245:instance/i-0554bb08f520eacb5	arn:aws:ec2:us-east-1:********9245:instance/i-064b4796bae7c7f7c	arn:aws:ec2:us-east-1:********9245:instance/i-07a40b5345ffa6ec0	arn:aws:ec2:us-east-1:********9245:network-interface/eni-0179ce6ecf953cec3	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-0d87c1881d7b8608f	arn:aws:ec2:us-east-1:********9245:security-group-rule/sgr-02c0c23ffdc2f608d	arn:aws:ec2:us-east-1:********9245:network-interface/eni-00130b55bdd9ae913	arn:aws:ec2:us-east-1:********9245:network-interface/eni-02a86e08568c11725	arn:aws:ec2:us-east-1:********9245:volume/vol-********3856ca381	arn:aws:ec2:us-east-1:********9245:instance/i-02b33e9a24ef042f9	arn:aws:ec2:us-east-1:********9245:network-interface/eni-00d5b15675a8a74cd
+
+RESULTADO: sin recursos evaluados presentes (2026-11-21T19:39:20Z)
