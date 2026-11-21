@@ -15,4 +15,4 @@ base_capacity = 2
 ami_id = "ami-0a951420c495183dc"
 
 # Versión del Portal que debe atender tráfico: v1 -> v2 -> v1 (recuperación)
-app_version = "v1"
+app_version = "v2"
