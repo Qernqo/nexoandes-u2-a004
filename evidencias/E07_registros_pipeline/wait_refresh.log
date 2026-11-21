@@ -1,0 +1,14 @@
+[2026-11-21T19:07:59Z] Controlador: reemplazo de ASG (na-u2-c50-a004-asg-ltN, create_before_destroy) | Target Group: na-u2-c50-a004-tg
+[2026-11-21T19:07:59Z] (Adaptación: la SCP del Learner Lab deniega autoscaling:StartInstanceRefresh)
+[2026-11-21T19:08:01Z] ASG vigentes=na-u2-c50-a004-asg-lt4 estado=Estable | ASG nuevo=na-u2-c50-a004-asg-lt4 (LT 4) | healthy=2/2 | destinos: i-07f61c97296adf415:healthy i-03ec8843710b8c884:healthy
+[2026-11-21T19:08:01Z] ESTABLE: destinos healthy=2 (capacidad deseada 2) en LT versión 4
+[2026-11-21T19:08:01Z] Reemplazo de esta ejecución: ASG na-u2-c50-a004-asg-lt4 creado 2026-11-21T19:05:31.376000+00:00 | resultado final: Successful (ASG anterior eliminado, 2 healthy en LT 4)
+[2026-11-21T19:08:01Z] Instancias en servicio:
+----------------------------------------------------------------------------------------------------
+|                                         DescribeInstances                                        |
++---------------------+--------------+-----+-----------------------------+----------+--------------+
+|         ID          |  IPPrivada   | LT  |           Lanzada           | Version  |    Zona      |
++---------------------+--------------+-----+-----------------------------+----------+--------------+
+|  i-03ec8843710b8c884|  10.4.10.120 |  4  |  2026-11-21T19:05:35+00:00  |  v1      |  us-east-1a  |
+|  i-07f61c97296adf415|  10.4.20.39  |  4  |  2026-11-21T19:05:35+00:00  |  v1      |  us-east-1b  |
++---------------------+--------------+-----+-----------------------------+----------+--------------+

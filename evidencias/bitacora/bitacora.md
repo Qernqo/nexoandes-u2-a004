@@ -30,6 +30,13 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | 18:44:10Z / 18:44:13Z | Apply complete! 1 added, 1 changed, 1 destroyed · **ESTABLE** (2/2 healthy en LT 3); verify_portal 15 v2, 0 fallos | C21, `E05_registros_pipeline/` |
 | 18:47:20Z | Observadores detenidos (+3 min). analyze_window: **ACEPTADO** (0 fallos, healthy mín. 2 / máx. 4, gap máx. 2,02 s) | `analisis_actualizacion_v2.md` |
 | 18:49Z | Plan posterior (run 44937586970): **No changes** | C28 |
+| 19:00:45Z | **Disparador E07:** ensayo planificado de reversión (plan §6 / adenda §9). Versión utilizable v1 (SHA-256 82f7e3a9…). PR #10 app_version=v1 (plan 1 add / 1 change / 1 destroy, build_ref 10fffda). Observadores `recuperacion_v1` iniciados | `E07_disparador.txt`, C29 |
+| 19:04Z | Merge PR #10 → run 44938810713, aprobado | C29 |
+| 19:05:35Z | Inicio del controlador: primer «Launching» de `na-u2-c50-a004-asg-lt4` (LT 4 = v1 build 10fffda) | `E07_tiempos_controlador.txt` |
+| 19:06:22Z–19:07:35Z | Eliminación del ASG `-lt3` (2 instancias v2 terminadas) | — |
+| 19:07:58Z / 19:08:01Z | Apply complete! 1/1/1 · **ESTABLE** 2/2 en LT 4; verify_portal 15 v1, 0 fallos | C30, `E07_registros_pipeline/` |
+| 19:11:05Z | Observadores detenidos. analyze_window: **ACEPTADO** (0 fallos, healthy 2–2, solo v1 tras estabilizar). SHA-256 v1 = E03 | `analisis_recuperacion_v1.md`, C31 |
+| 19:12Z | Plan posterior (run 44939696457): **No changes** (código v1 = AWS v1) | C32 |
 
 ## Tabla de sesión E03 (v1)
 
@@ -52,3 +59,13 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | Launch Template | versión 3 «v2 build 9495888» (versión 2 «v2 build a717a65» nunca atendió tráfico) |
 | SHA-256 v2 | 67bed5e66dc15cdc1b6d69a6963e44f011220a3d9f4fd1c24a9887c676f7b017 |
 | Perfil | extended |
+
+## Tabla de sesión E07 (retorno a v1)
+
+| Dato | Valor |
+|---|---|
+| ASG | na-u2-c50-a004-asg-lt4 (anteriores `-asg` y `-asg-lt3` eliminados) |
+| Instancias v1 nuevas | i-03ec8843710b8c884 (us-east-1a, 10.4.10.120) · i-07f61c97296adf415 (us-east-1b, 10.4.20.39) — distintas de E03 y E05 |
+| Launch Template | versión 4 «v1 build 10fffda» |
+| SHA-256 | 82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa (**igual a E03**) · perfil basic · passed=true |
+| Endpoint | el mismo DNS del ALB durante toda la operación |

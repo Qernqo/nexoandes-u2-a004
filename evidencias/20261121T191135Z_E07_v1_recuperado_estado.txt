@@ -1,0 +1,141 @@
+Registro: E07_v1_recuperado | prefijo: na-u2-c50-a004 | generado: 2026-11-21T19:11:36Z
+
+===== Contexto (cuenta enmascarada) =====
+--------------------------------------------------------------------------------------
+|                                  GetCallerIdentity                                 |
++--------+---------------------------------------------------------------------------+
+|  Arn   |  arn:aws:sts::********9245:assumed-role/voclabs/user5323268=Bryan_Cifra   |
+|  Cuenta|  ********9245                                                             |
++--------+---------------------------------------------------------------------------+
+Región: us-east-1
+
+===== VPC y subredes =====
+----------------------------------------
+|             DescribeVpcs             |
++------------+-------------------------+
+|  Alumno    |  a004                   |
+|  CIDR      |  10.4.0.0/16            |
+|  Curso     |  c50                    |
+|  Fase      |  U2                     |
+|  Proveedor |  aws                    |
+|  VPC       |  vpc-00dff4d6803b806d1  |
++------------+-------------------------+
+--------------------------------------------------------------------------------------------------------
+|                                            DescribeSubnets                                           |
++--------------+----------------+---------------------------+----------------------------+-------------+
+|     CIDR     | IPPublicaAuto  |          Nombre           |          Subred            |    Zona     |
++--------------+----------------+---------------------------+----------------------------+-------------+
+|  10.4.20.0/24|  True          |  na-u2-c50-a004-subnet-b  |  subnet-0ca8bc39db6f273f7  |  us-east-1b |
+|  10.4.10.0/24|  True          |  na-u2-c50-a004-subnet-a  |  subnet-097d37f465a6c4907  |  us-east-1a |
++--------------+----------------+---------------------------+----------------------------+-------------+
+----------------------------------------------------
+|                DescribeRouteTables               |
++--------------+---------+-------------------------+
+|    Destino   | Estado  |         Gateway         |
++--------------+---------+-------------------------+
+|  10.4.0.0/16 |  active |  local                  |
+|  10.4.0.0/16 |  active |  local                  |
+|  0.0.0.0/0   |  active |  igw-00c1118ec5681f2f4  |
++--------------+---------+-------------------------+
+
+===== Entrada de tráfico: ALB / listener / Target Group =====
+-------------------------------------------------------------------------
+|                         DescribeLoadBalancers                         |
++---------+-------------------------------------------------------------+
+|  DNS    |  na-u2-c50-a004-alb-101744380.us-east-1.elb.amazonaws.com   |
+|  Esquema|  internet-facing                                            |
+|  Estado |  active                                                     |
+|  Nombre |  na-u2-c50-a004-alb                                         |
+|  Zonas  |  us-east-1a,us-east-1b                                      |
++---------+-------------------------------------------------------------+
+-----------------------------------------------------------------------
+|                        DescribeTargetGroups                         |
++------------+----------+------------+---------+----------------------+
+| HealthPath | Healthy  | Intervalo  | Puerto  |         TG           |
++------------+----------+------------+---------+----------------------+
+|  /api/check|  2       |  10        |  80     |  na-u2-c50-a004-tg   |
++------------+----------+------------+---------+----------------------+
+--------------------------------------------------------
+|                 DescribeTargetHealth                 |
++---------+-----------------------+---------+----------+
+| Estado  |       Instancia       | Motivo  | Puerto   |
++---------+-----------------------+---------+----------+
+|  healthy|  i-07f61c97296adf415  |  None   |  80      |
+|  healthy|  i-03ec8843710b8c884  |  None   |  80      |
++---------+-----------------------+---------+----------+
+
+===== Controlador: Auto Scaling Group(s) del prefijo (reemplazo de ASG) =====
+-----------------------------------------------------
+|             DescribeAutoScalingGroups             |
++--------------+------------------------------------+
+|  ASG         |  na-u2-c50-a004-asg-lt4            |
+|  Creado      |  2026-11-21T19:05:31.376000+00:00  |
+|  Deseada     |  2                                 |
+|  HealthCheck |  ELB                               |
+|  LT          |  na-u2-c50-a004-lt                 |
+|  LTVersion   |  4                                 |
+|  Max         |  4                                 |
+|  Min         |  2                                 |
++--------------+------------------------------------+
+----------------------------------------------------------------------------
+|                         DescribeAutoScalingGroups                        |
++-----------+-----------------------+------------+----------+--------------+
+|   Ciclo   |       Instancia       | LTVersion  |  Salud   |    Zona      |
++-----------+-----------------------+------------+----------+--------------+
+|  InService|  i-03ec8843710b8c884  |  4         |  Healthy |  us-east-1a  |
+|  InService|  i-07f61c97296adf415  |  4         |  Healthy |  us-east-1b  |
++-----------+-----------------------+------------+----------+--------------+
+
+===== Instancias EC2 del Portal (incluye terminadas recientes) =====
+---------------------------------------------------------------------------------------------------------------------------------------------
+|                                                             DescribeInstances                                                             |
++---------+-------------+----------------------+--------------+---------------+-----+----------------------------+-----------+--------------+
+|  Build  |   Estado    |         ID           |  IPPrivada   |   IPPublica   | LT  |          Lanzada           |  Version  |    Zona      |
++---------+-------------+----------------------+--------------+---------------+-----+----------------------------+-----------+--------------+
+|  e3f129c|  terminated |  i-07a40b5345ffa6ec0 |  None        |  None         |  1  |  2026-11-21T17:34:10+00:00 |  v1       |  us-east-1a  |
+|  10fffda|  running    |  i-03ec8843710b8c884 |  10.4.10.120 |  98.80.14.38  |  4  |  2026-11-21T19:05:35+00:00 |  v1       |  us-east-1a  |
+|  9495888|  terminated |  i-064b4796bae7c7f7c |  None        |  None         |  3  |  2026-11-21T18:41:44+00:00 |  v2       |  us-east-1a  |
+|  10fffda|  running    |  i-07f61c97296adf415 |  10.4.20.39  |  23.20.91.157 |  4  |  2026-11-21T19:05:35+00:00 |  v1       |  us-east-1b  |
+|  e3f129c|  terminated |  i-05d02cc45da89f5a4 |  None        |  None         |  1  |  2026-11-21T17:34:10+00:00 |  v1       |  us-east-1b  |
+|  9495888|  terminated |  i-0554bb08f520eacb5 |  None        |  None         |  3  |  2026-11-21T18:41:44+00:00 |  v2       |  us-east-1b  |
++---------+-------------+----------------------+--------------+---------------+-----+----------------------------+-----------+--------------+
+
+===== Plantilla de cómputo: versiones de Launch Template =====
+----------------------------------------------------------------------------------------------------------------------------------
+|                                                 DescribeLaunchTemplateVersions                                                 |
++-----------------------+----------------------------+----------+----------------------------------------+-----------+-----------+
+|          AMI          |          Creada            | Default  |              Descripcion               |   Tipo    |  Version  |
++-----------------------+----------------------------+----------+----------------------------------------+-----------+-----------+
+|  ami-0a951420c495183dc|  2026-11-21T19:05:24+00:00 |  True    |  Portal NexoAndes U2 v1 build 10fffda  |  t3.micro |  4        |
+|  ami-0a951420c495183dc|  2026-11-21T18:41:34+00:00 |  False   |  Portal NexoAndes U2 v2 build 9495888  |  t3.micro |  3        |
+|  ami-0a951420c495183dc|  2026-11-21T18:19:51+00:00 |  False   |  Portal NexoAndes U2 v2 build a717a65  |  t3.micro |  2        |
+|  ami-0a951420c495183dc|  2026-11-21T17:33:54+00:00 |  False   |  Portal NexoAndes U2 v1 build e3f129c  |  t3.micro |  1        |
++-----------------------+----------------------------+----------+----------------------------------------+-----------+-----------+
+
+===== Controlador: tiempos del reemplazo de ASG (Instance Refresh denegado por SCP del Learner Lab) =====
+ASG                        Vigente   PrimerLanzamientoUTC   UltimoLanzamientoFin   PrimeraTerminacion     UltimaTerminacionFin   Lanz/Term
+na-u2-c50-a004-asg         no        2026-11-21T17:34:11Z   2026-11-21T17:34:16Z   2026-11-21T18:42:37Z   2026-11-21T18:43:49Z   2/2
+na-u2-c50-a004-asg-lt3     no        2026-11-21T18:41:44Z   2026-11-21T18:41:49Z   2026-11-21T19:06:22Z   2026-11-21T19:07:35Z   2/2
+na-u2-c50-a004-asg-lt4     si        2026-11-21T19:05:35Z   2026-11-21T19:05:41Z   -                      -                      2/0
+
+Para analyze_window.py: --start = PrimerLanzamientoUTC del ASG nuevo;
+--stable = la más tardía entre UltimaTerminacionFin del ASG anterior y la línea ESTABLE de wait_refresh.log.
+
+===== Actividades de escalado (últimas 10: distingue reemplazos automáticos) =====
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                                                                                                                                                                           DescribeScalingActivities                                                                                                                                                                           |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------+-------------+------------------------------------+
+|                                                                                                                                 Causa                                                                                                                                 |                    Descripcion                     |   Estado    |              Inicio                |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------+-------------+------------------------------------+
+|  At 2026-11-21T19:05:31Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 2.  At 2026-11-21T19:05:33Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 2. |  Launching a new EC2 instance: i-07f61c97296adf415 |  Successful |  2026-11-21T19:05:35.885000+00:00  |
+|  At 2026-11-21T19:05:31Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 2.  At 2026-11-21T19:05:33Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 2. |  Launching a new EC2 instance: i-03ec8843710b8c884 |  Successful |  2026-11-21T19:05:35.715000+00:00  |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------+-------------+------------------------------------+
+
+===== Prueba HTTP por el endpoint de servicio =====
+Endpoint: http://na-u2-c50-a004-alb-101744380.us-east-1.elb.amazonaws.com
+HTTP 200 {"observed_at_utc":"2026-11-21T19:12:11+00:00","version":"v1","functional_profile":"basic","passed":true,"student":"a004","course":"c50","x":4,"provider":"aws","build_ref":"10fffda","resource_id":"i-07f61c97296adf415","private_ip":"10.4.20.39","location":"us-east-1b","hostname":"ip-10-4-20-39","artifact_sha256":"82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa","metadata_age_seconds":16.74}
+HTTP 200 {"observed_at_utc":"2026-11-21T19:12:14+00:00","version":"v1","functional_profile":"basic","passed":true,"student":"a004","course":"c50","x":4,"provider":"aws","build_ref":"10fffda","resource_id":"i-03ec8843710b8c884","private_ip":"10.4.10.120","location":"us-east-1a","hostname":"ip-10-4-10-120","artifact_sha256":"82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa","metadata_age_seconds":18.8}
+HTTP 200 {"observed_at_utc":"2026-11-21T19:12:16+00:00","version":"v1","functional_profile":"basic","passed":true,"student":"a004","course":"c50","x":4,"provider":"aws","build_ref":"10fffda","resource_id":"i-07f61c97296adf415","private_ip":"10.4.20.39","location":"us-east-1b","hostname":"ip-10-4-20-39","artifact_sha256":"82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa","metadata_age_seconds":21.41}
+HTTP 200 {"observed_at_utc":"2026-11-21T19:12:18+00:00","version":"v1","functional_profile":"basic","passed":true,"student":"a004","course":"c50","x":4,"provider":"aws","build_ref":"10fffda","resource_id":"i-03ec8843710b8c884","private_ip":"10.4.10.120","location":"us-east-1a","hostname":"ip-10-4-10-120","artifact_sha256":"82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa","metadata_age_seconds":23.49}
+HTTP 200 {"observed_at_utc":"2026-11-21T19:12:21+00:00","version":"v1","functional_profile":"basic","passed":true,"student":"a004","course":"c50","x":4,"provider":"aws","build_ref":"10fffda","resource_id":"i-07f61c97296adf415","private_ip":"10.4.20.39","location":"us-east-1b","hostname":"ip-10-4-20-39","artifact_sha256":"82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa","metadata_age_seconds":26.1}
+HTTP 200 {"observed_at_utc":"2026-11-21T19:12:23+00:00","version":"v1","functional_profile":"basic","passed":true,"student":"a004","course":"c50","x":4,"provider":"aws","build_ref":"10fffda","resource_id":"i-07f61c97296adf415","private_ip":"10.4.20.39","location":"us-east-1b","hostname":"ip-10-4-20-39","artifact_sha256":"82f7e3a976f7ec7b46f739244e44e47b59a73aa840e0269870d3b0f42e1fd7fa","metadata_age_seconds":28.45}
