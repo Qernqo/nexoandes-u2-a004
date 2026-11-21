@@ -1,0 +1,321 @@
+﻿2026-11-21T18:19:31.7490855Z Current runner version: '2.338.2'
+2026-11-21T18:19:31.7516782Z ##[group]Runner Image Provisioner
+2026-11-21T18:19:31.7517990Z Hosted Compute Agent
+2026-11-21T18:19:31.7518722Z Version: 20261111.635
+2026-11-21T18:19:31.7519489Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-21T18:19:31.7520344Z Build Date: 2026-11-11T01:49:01Z
+2026-11-21T18:19:31.7521154Z Worker ID: {fe90a39d-96d0-4f99-8149-87b7c751e2b3}
+2026-11-21T18:19:31.7521965Z Region: northcentralus
+2026-11-21T18:19:31.7522586Z Cloud: Azure
+2026-11-21T18:19:31.7523217Z ##[endgroup]
+2026-11-21T18:19:31.7525302Z ##[group]Operating System
+2026-11-21T18:19:31.7526077Z Ubuntu
+2026-11-21T18:19:31.7526763Z 26.04.1
+2026-11-21T18:19:31.7527481Z LTS
+2026-11-21T18:19:31.7528174Z ##[endgroup]
+2026-11-21T18:19:31.7528858Z ##[group]Runner Image
+2026-11-21T18:19:31.7529494Z Image: ubuntu-26.04
+2026-11-21T18:19:31.7530202Z Version: 20261116.202.1
+2026-11-21T18:19:31.7531555Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261116.202/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-21T18:19:31.7533198Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261116.202
+2026-11-21T18:19:31.7534290Z ##[endgroup]
+2026-11-21T18:19:31.7535471Z ##[group]GITHUB_TOKEN Permissions
+2026-11-21T18:19:31.7538341Z Contents: read
+2026-11-21T18:19:31.7539068Z Metadata: read
+2026-11-21T18:19:31.7539695Z ##[endgroup]
+2026-11-21T18:19:31.7541910Z Secret source: Actions
+2026-11-21T18:19:31.7543041Z Cache mode: write
+2026-11-21T18:19:31.7544187Z Prepare workflow directory
+2026-11-21T18:19:31.8112582Z Prepare all required actions
+2026-11-21T18:19:31.8162532Z Getting action download info
+2026-11-21T18:19:32.0841665Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-21T18:19:32.1859974Z Download action repository 'hashicorp/setup-terraform@v3' (SHA:b9cd54a3c349d3f38e8881555d616ced269862dd)
+2026-11-21T18:19:32.5192499Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-21T18:19:32.8972024Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-21T18:19:33.1132609Z Complete job name: Apply autorizado y espera del controlador
+2026-11-21T18:19:33.2002357Z ##[group]Run actions/checkout@v4
+2026-11-21T18:19:33.2003296Z with:
+2026-11-21T18:19:33.2003802Z   repository: Qernqo/nexoandes-u2-a004
+2026-11-21T18:19:33.2008577Z   token: ***
+2026-11-21T18:19:33.2009347Z   ssh-strict: true
+2026-11-21T18:19:33.2010128Z   ssh-user: git
+2026-11-21T18:19:33.2010902Z   persist-credentials: true
+2026-11-21T18:19:33.2011783Z   clean: true
+2026-11-21T18:19:33.2012562Z   sparse-checkout-cone-mode: true
+2026-11-21T18:19:33.2013139Z   fetch-depth: 1
+2026-11-21T18:19:33.2013615Z   fetch-tags: false
+2026-11-21T18:19:33.2014090Z   show-progress: true
+2026-11-21T18:19:33.2014585Z   lfs: false
+2026-11-21T18:19:33.2015040Z   submodules: false
+2026-11-21T18:19:33.2015530Z   set-safe-directory: true
+2026-11-21T18:19:33.2016101Z   allow-unsafe-pr-checkout: false
+2026-11-21T18:19:33.2017045Z env:
+2026-11-21T18:19:33.2017790Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:33.2018302Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:33.2018802Z   TF_INPUT: false
+2026-11-21T18:19:33.2019315Z   AWS_REGION: us-east-1
+2026-11-21T18:19:33.2019840Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:33.2020445Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:33.2021203Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:33.2021878Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:33.2028117Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:33.2028631Z ##[endgroup]
+2026-11-21T18:19:33.4412994Z Syncing repository: Qernqo/nexoandes-u2-a004
+2026-11-21T18:19:33.4415831Z ##[group]Getting Git version info
+2026-11-21T18:19:33.4417553Z Working directory is '/home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004'
+2026-11-21T18:19:33.4419245Z [command]/usr/bin/git version
+2026-11-21T18:19:33.4420285Z git version 2.56.1
+2026-11-21T18:19:33.4424409Z ##[endgroup]
+2026-11-21T18:19:33.4439114Z Temporarily overriding HOME='/home/runner/work/_temp/c79d271e-da94-4ec3-bc99-3f7e69870a7f' before making global git config changes
+2026-11-21T18:19:33.4441752Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-21T18:19:33.4445464Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004
+2026-11-21T18:19:33.4506854Z Deleting the contents of '/home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004'
+2026-11-21T18:19:33.4511060Z ##[group]Initializing the repository
+2026-11-21T18:19:33.4519728Z [command]/usr/bin/git init /home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004
+2026-11-21T18:19:33.4612447Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-21T18:19:33.4614181Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-21T18:19:33.4615853Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-21T18:19:33.4617423Z hint: call:
+2026-11-21T18:19:33.4618213Z hint:
+2026-11-21T18:19:33.4719880Z hint: 	git config --global init.defaultBranch <name>
+2026-11-21T18:19:33.4721072Z hint:
+2026-11-21T18:19:33.4722136Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-21T18:19:33.4723716Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-21T18:19:33.4724983Z hint:
+2026-11-21T18:19:33.4725690Z hint: 	git branch -m <name>
+2026-11-21T18:19:33.4726493Z hint:
+2026-11-21T18:19:33.4727861Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-21T18:19:33.4730302Z Initialized empty Git repository in /home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004/.git/
+2026-11-21T18:19:33.4735553Z [command]/usr/bin/git remote add origin https://github.com/Qernqo/nexoandes-u2-a004
+2026-11-21T18:19:33.4739685Z ##[endgroup]
+2026-11-21T18:19:33.4741331Z ##[group]Disabling automatic garbage collection
+2026-11-21T18:19:33.4742826Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-21T18:19:33.4746201Z ##[endgroup]
+2026-11-21T18:19:33.4747858Z ##[group]Setting up auth
+2026-11-21T18:19:33.4751957Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-21T18:19:33.4790267Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-21T18:19:33.5255210Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-21T18:19:33.5302143Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-21T18:19:33.5585229Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-21T18:19:33.5622516Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-21T18:19:33.5898288Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-21T18:19:33.5938030Z ##[endgroup]
+2026-11-21T18:19:33.5939084Z ##[group]Fetching the repository
+2026-11-21T18:19:33.5948650Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cdb51a9429612d57a9abc245ab9663d8aae2f707:refs/remotes/origin/main
+2026-11-21T18:19:33.9460489Z From https://github.com/Qernqo/nexoandes-u2-a004
+2026-11-21T18:19:33.9463168Z  * [new ref]         cdb51a9429612d57a9abc245ab9663d8aae2f707 -> origin/main
+2026-11-21T18:19:33.9468503Z ##[endgroup]
+2026-11-21T18:19:33.9470982Z ##[group]Determining the checkout info
+2026-11-21T18:19:33.9473788Z ##[endgroup]
+2026-11-21T18:19:33.9478473Z [command]/usr/bin/git sparse-checkout disable
+2026-11-21T18:19:33.9533768Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-21T18:19:33.9573354Z ##[group]Checking out the ref
+2026-11-21T18:19:33.9576462Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-21T18:19:33.9708201Z Switched to a new branch 'main'
+2026-11-21T18:19:33.9713472Z branch 'main' set up to track 'origin/main'.
+2026-11-21T18:19:33.9720707Z ##[endgroup]
+2026-11-21T18:19:33.9763374Z [command]/usr/bin/git log -1 --format=%H
+2026-11-21T18:19:33.9788220Z cdb51a9429612d57a9abc245ab9663d8aae2f707
+2026-11-21T18:19:34.0110140Z ##[group]Run hashicorp/setup-terraform@v3
+2026-11-21T18:19:34.0111615Z with:
+2026-11-21T18:19:34.0112597Z   terraform_version: 1.13.x
+2026-11-21T18:19:34.0113836Z   terraform_wrapper: false
+2026-11-21T18:19:34.0115222Z   cli_config_credentials_hostname: app.terraform.io
+2026-11-21T18:19:34.0116733Z env:
+2026-11-21T18:19:34.0117826Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:34.0118928Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:34.0120076Z   TF_INPUT: false
+2026-11-21T18:19:34.0121174Z   AWS_REGION: us-east-1
+2026-11-21T18:19:34.0122337Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:34.0123712Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:34.0125460Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:34.0127066Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:34.0145084Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:34.0146218Z ##[endgroup]
+2026-11-21T18:19:34.1623012Z (node:2459) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-21T18:19:34.1629418Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-21T18:19:34.4479323Z [command]/usr/bin/unzip -o -q /home/runner/work/_temp/126a6249-cab3-4ef0-8415-a026f1b045c6
+2026-11-21T18:19:35.1024557Z ##[group]Run ACC=$(aws sts get-caller-identity --query Account --output text)
+2026-11-21T18:19:35.1025329Z [36;1mACC=$(aws sts get-caller-identity --query Account --output text)[0m
+2026-11-21T18:19:35.1025835Z [36;1mecho "::add-mask::$ACC"[0m
+2026-11-21T18:19:35.1066946Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-21T18:19:35.1067532Z env:
+2026-11-21T18:19:35.1067789Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:35.1068095Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:35.1068391Z   TF_INPUT: false
+2026-11-21T18:19:35.1068667Z   AWS_REGION: us-east-1
+2026-11-21T18:19:35.1068964Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:35.1069325Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:35.1069913Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:35.1070330Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:35.1074278Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:35.1074600Z ##[endgroup]
+2026-11-21T18:19:38.8167893Z ##[group]Run actions/download-artifact@v4
+2026-11-21T18:19:38.8168240Z with:
+2026-11-21T18:19:38.8168450Z   name: plan-44933633166
+2026-11-21T18:19:38.8168700Z   path: terraform
+2026-11-21T18:19:38.8168929Z   merge-multiple: false
+2026-11-21T18:19:38.8169217Z   repository: Qernqo/nexoandes-u2-a004
+2026-11-21T18:19:38.8169500Z   run-id: 44933633166
+2026-11-21T18:19:38.8169732Z env:
+2026-11-21T18:19:38.8169921Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:38.8170142Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:38.8170378Z   TF_INPUT: false
+2026-11-21T18:19:38.8170593Z   AWS_REGION: us-east-1
+2026-11-21T18:19:38.8170850Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:38.8171153Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:38.8171738Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:38.8172132Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:38.8175956Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:38.8176197Z ##[endgroup]
+2026-11-21T18:19:38.9737646Z Downloading single artifact
+2026-11-21T18:19:38.9890305Z (node:2492) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-21T18:19:38.9891800Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-21T18:19:39.1101829Z Preparing to download the following artifacts:
+2026-11-21T18:19:39.1103730Z - plan-44933633166 (ID: 14719125383, Size: 83408, Expected Digest: sha256:14fb0d0c2c297edd9e190c64c80b3eb4b27245e863d260c78766a52c128222ed)
+2026-11-21T18:19:39.2693286Z Redirecting to blob download url: https://productionresultssa10.blob.core.windows.net/actions-results/cef10b64-0bed-8677-af7d-a50a7b76dc97/workflow-job-run-fd418275-8517-5d56-a743-0402ffe93365/artifacts/7082ec4a8eea2b59e91feb696b8c1d292b80f7ee3182d42d2d0078ebaf3cfb9e.zip
+2026-11-21T18:19:39.2695513Z Starting download of artifact to: /home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004/terraform
+2026-11-21T18:19:39.4018365Z (node:2492) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-21T18:19:39.4411996Z SHA256 digest of downloaded artifact is 14fb0d0c2c297edd9e190c64c80b3eb4b27245e863d260c78766a52c128222ed
+2026-11-21T18:19:39.4413060Z Artifact download completed successfully.
+2026-11-21T18:19:39.4413602Z Total of 1 artifact(s) downloaded
+2026-11-21T18:19:39.4418158Z Download artifact has finished successfully
+2026-11-21T18:19:39.4548067Z ##[group]Run terraform init -no-color -lockfile=readonly \
+2026-11-21T18:19:39.4548695Z [36;1mterraform init -no-color -lockfile=readonly \[0m
+2026-11-21T18:19:39.4549259Z [36;1m  -backend-config="bucket=***" \[0m
+2026-11-21T18:19:39.4549600Z [36;1m  -backend-config="key=$STATE_KEY" \[0m
+2026-11-21T18:19:39.4549947Z [36;1m  -backend-config="region=$AWS_REGION" \[0m
+2026-11-21T18:19:39.4550277Z [36;1m  -backend-config="encrypt=true" \[0m
+2026-11-21T18:19:39.4550607Z [36;1m  -backend-config="use_lockfile=true"[0m
+2026-11-21T18:19:39.4582888Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-21T18:19:39.4583252Z env:
+2026-11-21T18:19:39.4583472Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:39.4583714Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:39.4583967Z   TF_INPUT: false
+2026-11-21T18:19:39.4584192Z   AWS_REGION: us-east-1
+2026-11-21T18:19:39.4584434Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:39.4584739Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:39.4585179Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:39.4585581Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:39.4589639Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:39.4589893Z ##[endgroup]
+2026-11-21T18:19:39.4873340Z Initializing the backend...
+2026-11-21T18:19:39.7333735Z 
+2026-11-21T18:19:39.7334506Z Successfully configured the backend "s3"! Terraform will automatically
+2026-11-21T18:19:39.7335464Z use this backend unless the backend configuration changes.
+2026-11-21T18:19:39.8895093Z Initializing modules...
+2026-11-21T18:19:39.8906976Z - network in modules/aws_network
+2026-11-21T18:19:39.8932387Z - portal in modules/aws_portal
+2026-11-21T18:19:39.8945407Z Initializing provider plugins...
+2026-11-21T18:19:39.8946124Z - Reusing previous version of hashicorp/aws from the dependency lock file
+2026-11-21T18:19:40.0123705Z - Installing hashicorp/aws v6.73.0...
+2026-11-21T18:19:47.3299324Z - Installed hashicorp/aws v6.73.0 (signed by HashiCorp)
+2026-11-21T18:19:47.3300312Z 
+2026-11-21T18:19:47.3300896Z Terraform has been successfully initialized!
+2026-11-21T18:19:47.3380960Z ##[group]Run X=$(sed -nE 's/^x *= *([0-9]+).*/\1/p' terraform.tfvars)
+2026-11-21T18:19:47.3381506Z [36;1mX=$(sed -nE 's/^x *= *([0-9]+).*/\1/p' terraform.tfvars)[0m
+2026-11-21T18:19:47.3381965Z [36;1mCOURSE=$(sed -nE 's/^course *= *"([^"]+)".*/\1/p' terraform.tfvars)[0m
+2026-11-21T18:19:47.3382462Z [36;1mVERSION=$(sed -nE 's/^app_version *= *"([^"]+)".*/\1/p' terraform.tfvars)[0m
+2026-11-21T18:19:47.3382871Z [36;1mSTUDENT=$(printf 'a%03d' "$X")[0m
+2026-11-21T18:19:47.3383150Z [36;1m{[0m
+2026-11-21T18:19:47.3383513Z [36;1m  echo "x=$X"; echo "course=$COURSE"; echo "student=$STUDENT"; echo "version=$VERSION"[0m
+2026-11-21T18:19:47.3384007Z [36;1m  echo "prefix=na-u2-$COURSE-$STUDENT"[0m
+2026-11-21T18:19:47.3384522Z [36;1m} >> "$GITHUB_OUTPUT"[0m
+2026-11-21T18:19:47.3416879Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-21T18:19:47.3417596Z env:
+2026-11-21T18:19:47.3417830Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:47.3418119Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:47.3418359Z   TF_INPUT: false
+2026-11-21T18:19:47.3418585Z   AWS_REGION: us-east-1
+2026-11-21T18:19:47.3418826Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:47.3419119Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:47.3419591Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:47.3419958Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:47.3423778Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:47.3424031Z ##[endgroup]
+2026-11-21T18:19:47.3582162Z ##[group]Run echo "INICIO_APPLY_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a ../apply.log
+2026-11-21T18:19:47.3582833Z [36;1mecho "INICIO_APPLY_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a ../apply.log[0m
+2026-11-21T18:19:47.3583352Z [36;1mecho "APPLY_START_EPOCH=$(date +%s)" >> "$GITHUB_ENV"[0m
+2026-11-21T18:19:47.3583858Z [36;1mterraform apply -no-color -lock-timeout=120s tfplan | tee -a ../apply.log[0m
+2026-11-21T18:19:47.3584392Z [36;1mecho "FIN_APPLY_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a ../apply.log[0m
+2026-11-21T18:19:47.3615331Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-21T18:19:47.3615678Z env:
+2026-11-21T18:19:47.3615876Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:47.3616115Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:47.3616350Z   TF_INPUT: false
+2026-11-21T18:19:47.3616721Z   AWS_REGION: us-east-1
+2026-11-21T18:19:47.3616995Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:47.3617513Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:47.3617949Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:47.3618329Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:47.3622168Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:47.3622414Z ##[endgroup]
+2026-11-21T18:19:47.3703813Z INICIO_APPLY_UTC=2026-11-21T18:19:47Z
+2026-11-21T18:19:50.7246682Z module.portal.aws_launch_template.portal: Modifying... [id=lt-078862d5af9becb83]
+2026-11-21T18:19:57.2650247Z module.portal.aws_launch_template.portal: Modifications complete after 6s [id=lt-078862d5af9becb83]
+2026-11-21T18:19:57.2865313Z module.portal.aws_autoscaling_group.portal: Modifying... [id=na-u2-c50-a004-asg]
+2026-11-21T18:19:58.6345593Z 
+2026-11-21T18:19:58.6357589Z Error: starting Auto Scaling Group (na-u2-c50-a004-asg) instance refresh: operation error Auto Scaling: StartInstanceRefresh, https response error StatusCode: 403, RequestID: edaaee56-a096-4f8b-b84a-b3c46414e207, api error AccessDenied: User: arn:aws:sts::***:assumed-role/voclabs/user5323268=Bryan_Cifra is not authorized to perform: autoscaling:StartInstanceRefresh on resource: arn:aws:autoscaling:us-east-1:***:autoScalingGroup:90d2224f-8e66-4c3d-abae-9aa36fb18022:autoScalingGroupName/na-u2-c50-a004-asg with an explicit deny in a service control policy: arn:aws:organizations::975050020283:policy/o-lhcsgco1ui/service_control_policy/p-x2ts0tcf
+2026-11-21T18:19:58.6362510Z 
+2026-11-21T18:19:58.6363296Z   with module.portal.aws_autoscaling_group.portal,
+2026-11-21T18:19:58.6364143Z   on modules/aws_portal/main.tf line 194, in resource "aws_autoscaling_group" "portal":
+2026-11-21T18:19:58.6364953Z  194: resource "aws_autoscaling_group" "portal" {
+2026-11-21T18:19:58.6365343Z 
+2026-11-21T18:19:58.7700495Z ##[error]Process completed with exit code 1.
+2026-11-21T18:19:58.7803593Z ##[group]Run actions/upload-artifact@v4
+2026-11-21T18:19:58.7803930Z with:
+2026-11-21T18:19:58.7804174Z   name: registros-apply-44933633166
+2026-11-21T18:19:58.7804578Z   path: apply.log
+wait_refresh.log
+verify_portal.log
+verify_cleanup.log
+
+2026-11-21T18:19:58.7804992Z   if-no-files-found: ignore
+2026-11-21T18:19:58.7805258Z   retention-days: 30
+2026-11-21T18:19:58.7805491Z   compression-level: 6
+2026-11-21T18:19:58.7805725Z   overwrite: false
+2026-11-21T18:19:58.7805956Z   include-hidden-files: false
+2026-11-21T18:19:58.7806209Z env:
+2026-11-21T18:19:58.7806403Z   TF_VERSION: 1.13.x
+2026-11-21T18:19:58.7806833Z   TF_IN_AUTOMATION: true
+2026-11-21T18:19:58.7807078Z   TF_INPUT: false
+2026-11-21T18:19:58.7807608Z   AWS_REGION: us-east-1
+2026-11-21T18:19:58.7807881Z   AWS_DEFAULT_REGION: us-east-1
+2026-11-21T18:19:58.7808180Z   STATE_KEY: nexoandes/u2/aws/terraform.tfstate
+2026-11-21T18:19:58.7808604Z   AWS_ACCESS_KEY_ID: ***
+2026-11-21T18:19:58.7809000Z   AWS_SECRET_ACCESS_KEY: ***
+2026-11-21T18:19:58.7812850Z   AWS_SESSION_TOKEN: ***
+2026-11-21T18:19:58.7813258Z   APPLY_START_EPOCH: 1795285187
+2026-11-21T18:19:58.7813527Z ##[endgroup]
+2026-11-21T18:19:59.0028749Z (node:2557) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-21T18:19:59.0030364Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-21T18:19:59.0112809Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-21T18:19:59.0124048Z The least common ancestor is /home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004. This will be the root directory of the artifact
+2026-11-21T18:19:59.0125649Z With the provided path, there will be 1 file uploaded
+2026-11-21T18:19:59.0126677Z Artifact name is valid!
+2026-11-21T18:19:59.0127140Z Root directory input is valid!
+2026-11-21T18:19:59.3424046Z Beginning upload of artifact content to blob storage
+2026-11-21T18:19:59.3738298Z (node:2557) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-21T18:19:59.4802877Z Uploaded bytes 302
+2026-11-21T18:19:59.5153966Z Finished uploading artifact content to blob storage!
+2026-11-21T18:19:59.5155507Z SHA256 digest of uploaded artifact zip is 290b02d685654f15f4073c6088c3b6844a80f8a652520685887513da6d166789
+2026-11-21T18:19:59.5158253Z Finalizing artifact upload
+2026-11-21T18:19:59.8838388Z Artifact registros-apply-44933633166.zip successfully finalized. Artifact ID 14719505534
+2026-11-21T18:19:59.8840139Z Artifact registros-apply-44933633166 has been successfully uploaded! Final size is 302 bytes. Artifact ID is 14719505534
+2026-11-21T18:19:59.8841715Z Artifact download URL: https://github.com/Qernqo/nexoandes-u2-a004/actions/runs/44933633166/artifacts/14719505534
+2026-11-21T18:19:59.9059437Z Post job cleanup.
+2026-11-21T18:19:59.9998615Z [command]/usr/bin/git version
+2026-11-21T18:20:00.0049903Z git version 2.56.1
+2026-11-21T18:20:00.0093411Z Temporarily overriding HOME='/home/runner/work/_temp/7fc6759e-4411-4151-ad1b-d885c7865d60' before making global git config changes
+2026-11-21T18:20:00.0095149Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-21T18:20:00.0099782Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nexoandes-u2-a004/nexoandes-u2-a004
+2026-11-21T18:20:00.0164043Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-21T18:20:00.0215809Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-21T18:20:00.0593473Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-21T18:20:00.0645576Z http.https://github.com/.extraheader
+2026-11-21T18:20:00.0659636Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-21T18:20:00.0704999Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-21T18:20:00.1108533Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-21T18:20:00.1159971Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-21T18:20:00.1629711Z Cleaning up orphan processes
+2026-11-21T18:20:00.2025212Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/upload-artifact@v4, hashicorp/setup-terraform@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

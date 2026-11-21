@@ -16,6 +16,12 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | 17:36:49Z | **Apply complete! Resources: 19 added**; ESTABLE 17:36:54Z (2/2 healthy, LT v1); verify_portal 15 muestras v1, 0 fallos | C10, C11, `E03_registros_pipeline/` |
 | 17:38Z | Consulta independiente `capture_state.sh` y curl /api/info, /api/check. **Corrección de script:** `capture_state.sh` mezclaba `-w HTTP` con el JSON y jq imprimía «(sin respuesta JSON)» falso; ahora registra código HTTP y JSON por separado | `*_E03_v1_inicial_estado.txt` |
 | 17:40Z | Plan posterior (run 44931248948): **No changes** | C18 |
+| 17:45Z | PR #5 plan de cambio v1→v2 fusionado (antes del PR de v2) | C19 |
+| 18:03:42Z | Inicio de observadores `actualizacion_v2` (HTTP 2 s, AWS 20 s) | — |
+| 18:12Z | PR #6 `feat/portal-v2`: plan 0 add / 2 change / 0 destroy (build_ref a717a65) | C20 |
+| 18:19:47Z | Merge PR #6 → run 44933633166 aprobado; LT versión 2 creada | — |
+| 18:19:58Z | **Incidente (intento v2):** apply falla: `AccessDenied … autoscaling:StartInstanceRefresh … explicit deny in a service control policy`. El ASG quedó apuntando a LT 2 pero sin reemplazar instancias; servicio sin impacto: 525 respuestas HTTP 200 v1, 0 fallos, 2/2 healthy | `bitacora/intento_v2_refresh_denegado_run44933633166/` |
+| 18:21Z | Observadores detenidos. Decisión (Anexo B, adaptación documentada): sustituir Instance Refresh por **reemplazo inmutable del ASG** (create_before_destroy, nombre `-asg-ltN`, mismo TG); adaptar scripts que suponían nombre fijo de ASG y refresh | Adenda §9 de `docs/plan_cambio_u2.md` |
 
 ## Tabla de sesión E03 (v1)
 
