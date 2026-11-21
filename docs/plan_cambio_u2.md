@@ -101,14 +101,17 @@ Evidencia: `evidencias/bitacora/intento_v2_refresh_denegado_run44933633166/`.
 | Recuperación | Nueva versión de plantilla con v1 → otro ASG nuevo (mismo procedimiento) | Nuevo refresh |
 
 **Parámetros que cambian respecto de §3:**
-- Controlador: reemplazo de ASG; el nombre del ASG incluye la versión de plantilla (`na-u2-c50-a004-asg-lt2` para v2, `-lt3` para el retorno a v1).
+- Controlador: reemplazo de ASG; el nombre del ASG incluye la versión de plantilla (`na-u2-c50-a004-asg-lt3` para v2, `-lt4` para el retorno a v1).
 - Se elimina el bloque `instance_refresh`; se agrega `lifecycle { create_before_destroy = true }`.
-- Plan esperado del cambio: `1 to add, 0 to change, 1 to destroy` (solo el ASG; ALB, TG, VPC y SG sin cambios; mismo endpoint).
-  La Launch Template versión 2 ya existe (creada en el intento denegado) y no cambia.
+- Plan esperado del cambio: `1 to add, 1 to change, 1 to destroy`: Launch Template *update* (nueva **versión 3** = v2 con el
+  build_ref del commit que introduce el módulo adaptado) + ASG *replace* (`-asg` → `-asg-lt3`). ALB, TG, VPC y SG sin cambios; mismo endpoint.
+  La versión 2 (v2 build a717a65, creada en el intento denegado) queda como registro histórico y nunca atendió tráfico.
+  *(Corrección declarada en el PR del módulo, antes de su ejecución: la primera redacción de esta adenda indicaba `-lt2` y `1/0/1`,
+  sin considerar que build_ref cambia con ese commit.)*
 - Inicio del intervalo = primer «Launching» del ASG nuevo; estabilización = la más tardía entre la última «Terminating» del ASG
   anterior y la línea ESTABLE (`refresh_times.sh` adaptado); el resto de la ventana (−60 s / +120 s, 2 s, timeout 5 s) no cambia.
 
-**Aceptación (sustituye el punto 5 de §4):** apply terminado sin error, un único ASG vigente (`-lt2`) con 2 destinos healthy en LT 2,
+**Aceptación (sustituye el punto 5 de §4):** apply terminado sin error, un único ASG vigente (`-lt3`) con 2 destinos healthy en LT 3,
 ASG anterior eliminado, solo v2 tras estabilizar, 0 fallos funcionales, ≥ 2 healthy en cada consulta y plan posterior `No changes`.
 
 **Detención adicional:** ≥ 3 fallos HTTP consecutivos o healthy < 2 → cancelar la ejecución del pipeline solo si el ASG anterior

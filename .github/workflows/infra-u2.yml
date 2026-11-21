@@ -235,7 +235,7 @@ jobs:
           terraform apply -no-color -lock-timeout=120s tfplan | tee -a ../apply.log
           echo "FIN_APPLY_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a ../apply.log
 
-      - name: Esperar resultado real del controlador (Instance Refresh) y destinos
+      - name: Esperar resultado real del controlador (reemplazo de ASG) y destinos
         if: inputs.operation != 'destroy'
         run: |
           bash scripts/wait_refresh.sh "${{ steps.ctx.outputs.prefix }}" "$APPLY_START_EPOCH" 2400 | tee wait_refresh.log

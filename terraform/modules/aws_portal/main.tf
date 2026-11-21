@@ -192,7 +192,14 @@ resource "aws_launch_template" "portal" {
 # ---------------------------------------------------------------------------
 
 resource "aws_autoscaling_group" "portal" {
-  name                = "${var.name_prefix}-asg"
+  # ADAPTACIÓN (restricción del Learner Lab): la SCP de la cuenta deniega
+  # autoscaling:StartInstanceRefresh. El controlador del cambio pasa a ser el
+  # REEMPLAZO DEL ASG: el nombre incluye la versión de la Launch Template, de modo
+  # que una versión nueva crea un ASG nuevo (create_before_destroy) en el MISMO
+  # Target Group; Terraform espera sus destinos healthy y solo entonces elimina el
+  # ASG anterior. Si el nuevo no alcanza la capacidad, el apply falla y el ASG
+  # anterior sigue atendiendo (detención automática).
+  name                = "${var.name_prefix}-asg-lt${aws_launch_template.portal.latest_version}"
   min_size            = var.base_capacity
   desired_capacity    = var.base_capacity
   max_size            = local.max_capacity
@@ -202,26 +209,19 @@ resource "aws_autoscaling_group" "portal" {
   health_check_type         = "ELB"
   health_check_grace_period = 180
 
-  # Solo en la creación: esperar destinos saludables en el ALB.
+  # En la creación de cada ASG (cada versión): esperar destinos healthy en el ALB
+  # antes de continuar (y, por create_before_destroy, antes de eliminar el anterior).
   min_elb_capacity          = var.base_capacity
   wait_for_capacity_timeout = "15m"
 
-  # Versión explícita: cada cambio de plantilla es una versión nueva y dispara el refresh.
+  # Versión explícita: cada cambio de plantilla es una versión nueva => ASG nuevo.
   launch_template {
     id      = aws_launch_template.portal.id
     version = aws_launch_template.portal.latest_version
   }
 
-  instance_refresh {
-    strategy = "Rolling"
-
-    preferences {
-      min_healthy_percentage = 100
-      max_healthy_percentage = 200
-      instance_warmup        = 120
-      skip_matching          = false
-      auto_rollback          = false
-    }
+  lifecycle {
+    create_before_destroy = true
   }
 
   dynamic "tag" {
