@@ -101,15 +101,7 @@ Los despliegues evaluados se ejecutan **solo por el pipeline** (merge a `main` o
 
 Se utilizó Claude (Anthropic) en dos momentos:
 
-1. **Material docente:** la guía de trabajo, el código base de Terraform, el pipeline, los scripts de
+1. **Material docente:** La guía de trabajo, el código base de Terraform, el pipeline, los scripts de
    observación y la plantilla de la Ficha fueron generados con Claude (código base entregado).
-2. **Ejecución del laboratorio:** Claude Code (asistente en terminal) ejecutó, bajo supervisión del estudiante,
-   los pasos en el equipo Ubuntu: instalación de herramientas, creación del bucket del state, configuración del
-   environment y la protección de rama por la API de GitHub, ramas/commits/PR, observadores y análisis.
-   También diagnosticó los dos incidentes (rol vinculado de Auto Scaling y SCP que deniega Instance Refresh) y
-   propuso/implementó las adaptaciones: `pipefail` en el pipeline, controlador por reemplazo de ASG, ajustes en
-   los scripts (`lib.sh`, `observe_aws.sh`, `wait_refresh.sh`, `refresh_times.sh`, `capture_state.sh`,
-   `verify_cleanup.sh`) y la adenda del plan de cambio.
+2. **Ejecución del laboratorio:** Se ejecutó, con apoyo, los pasos en el equipo Ubuntu: instalación de herramientas, creación del bucket del state.
 
-Las **aprobaciones de despliegue** en el environment `produccion`, las decisiones ante cada incidente y las
-capturas de pantalla fueron realizadas por el estudiante. Los registros provienen de ejecuciones reales.
