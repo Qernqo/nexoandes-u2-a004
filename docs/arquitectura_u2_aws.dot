@@ -1,4 +1,5 @@
 // Diagrama de la implementación real U2 (AWS). Generar PNG:
+// NOTA: boceto previo. El diagrama final de la entrega es docs/arquitectura_u2_aws.png (no se genera desde este archivo).
 //   dot -Tpng -Gdpi=160 docs/arquitectura_u2_aws.dot -o docs/arquitectura_u2_aws.png
 digraph U2 {
   graph [rankdir=TB, fontname="Arial", fontsize=13, splines=spline, nodesep=0.45, ranksep=0.55, pad=0.3,
