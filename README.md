@@ -14,7 +14,7 @@ Identidad de laboratorio: **X=4 · alumno a004 · curso c50** · prefijo `na-u2-
 | `terraform/templates/user_data_u2.sh.tpl` | Artefacto docente del Portal (sin modificar), renderizado con `templatefile()` |
 | `.github/workflows/infra-u2.yml` | Pipeline: controles → plan → aprobación (`produccion`) → apply → espera del controlador → verificación |
 | `scripts/` | Observación (`observe_http.sh`, `observe_aws.sh`), análisis (`analyze_window.py`), consultas independientes (`capture_state.sh`, `refresh_times.sh`, `verify_cleanup.sh`), espera/verificación del pipeline, higiene y ZIP |
-| `docs/` | Diagrama (`arquitectura_u2_aws.png/.dot`), plan de cambio (`plan_cambio_u2.md`), README docente |
+| `docs/` | Diagrama final (`arquitectura_u2_aws.png`; `arquitectura_u2_aws.dot` es el boceto Graphviz previo), plan de cambio (`plan_cambio_u2.md`), README docente |
 | `evidencias/` | Registros de observación y consultas (revisados, sin secretos) |
 
 ## 2. Arquitectura
