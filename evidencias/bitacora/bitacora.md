@@ -41,6 +41,7 @@ Cuenta AWS ****9245 (AWS Academy Learner Lab, rol voclabs) · us-east-1 · state
 | 19:36Z | Destroy por pipeline (run 44940467727): plan 0 / 0 / 19 to destroy, aprobado | — |
 | 19:38:22Z | `Apply complete! Resources: 0 added, 0 changed, 19 destroyed.` (al aplicar un plan -destroy guardado Terraform imprime «Apply complete», no «Destroy complete») · verify_cleanup en el pipeline: sin recursos | C34, `E08_registros_pipeline/` |
 | 19:39:20Z | Comprobación independiente local `verify_cleanup.sh`: todas las categorías ELIMINADO; state vacío | `E08_verificacion_limpieza.txt`, C35 |
+| 2026-11-22 00:43Z | **Excepción documentada:** PR #15 (solo `docs/` y `README.md`: diagrama final). El check «Plan» ya no puede pasar porque el bucket del state fue retirado en E08; con autorización del estudiante se desactivó `enforce_admins` solo para este merge y se reactivó de inmediato. Sin cambios en `terraform/` ni en el pipeline | PR #15 |
 
 ## Tabla de sesión E03 (v1)
 
